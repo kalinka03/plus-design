@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plus Investment · Style Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15171b;
+    --ink-2:#222429;
+    --paper:#eef0f2;
+    --paper-2:#e6e8eb;
+    --paper-3:#dadde1;
+    --mute:#9aa0a6;
+    --text:#1a1c20;
+    --text-soft:#54585f;
+    --gold:#f5ca3a;
+    --gold-deep:#e3b524;
+    --container:1280px;
+    --pad: clamp(20px, 4vw, 56px);
+    --sans:"Inter", ui-sans-serif, system-ui, sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--paper);color:var(--text);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  .wrap{max-width:var(--container);margin:auto;padding-inline:var(--pad)}
+
+  /* Top */
+  .sg-top{padding:32px 0;border-bottom:1px solid rgba(20,22,26,.08);display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .sg-top .brand{display:flex;align-items:center;gap:14px}
+  .sg-top .brand img{height:34px}
+  .sg-top .brand .label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-soft);padding:6px 10px;background:#fff;border-radius:999px;border:1px solid rgba(20,22,26,.08)}
+  .sg-top .links{display:flex;gap:24px;font-size:13px;color:var(--text-soft)}
+  .sg-top .links a:hover{color:var(--ink)}
+  .sg-top .back{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:var(--ink-2);color:#fff;font-size:13px;font-weight:500}
+  .sg-top .back:hover{background:#0e1014}
+
+  /* Hero */
+  .sg-hero{padding:64px 0 48px}
+  .sg-hero h1{font-weight:300;font-size:clamp(44px,6vw,84px);letter-spacing:-0.03em;line-height:1;margin:0 0 18px;max-width:18ch}
+  .sg-hero h1 em{font-style:normal;font-weight:600}
+  .sg-hero h1 .gold{color:var(--gold);font-weight:500}
+  .sg-hero p{color:var(--text-soft);max-width:60ch;font-size:16px;line-height:1.55;margin:0;font-weight:300}
+  .sg-hero .meta{margin-top:28px;display:flex;gap:32px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft)}
+  .sg-hero .meta b{color:var(--ink);font-weight:500;margin-left:8px}
+
+  /* Section */
+  section.sg{padding:56px 0;border-top:1px solid rgba(20,22,26,.08)}
+  .sg-head{display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start;margin-bottom:32px}
+  .sg-head .num{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-soft)}
+  .sg-head h2{font-weight:400;font-size:32px;letter-spacing:-0.02em;margin:8px 0 0}
+  .sg-head .desc{color:var(--text-soft);font-size:14px;line-height:1.55;max-width:52ch;font-weight:300}
+
+  /* Colors */
+  .colors{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .swatch{border-radius:18px;overflow:hidden;border:1px solid rgba(20,22,26,.06);background:#fff}
+  .swatch__chip{aspect-ratio: 5/3;padding:24px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
+  .swatch__chip .role{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-family:var(--mono);opacity:.7}
+  .swatch__chip .name{font-size:24px;letter-spacing:-0.02em;font-weight:500}
+  .swatch__meta{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .swatch__meta .hex{font-family:var(--mono);font-size:13px;color:var(--ink)}
+  .swatch__meta .copy{font-size:11px;color:var(--mute);letter-spacing:.04em}
+  .swatch--ink .swatch__chip{background:var(--ink-2)}
+  .swatch--gold .swatch__chip{background:var(--gold);color:var(--ink)}
+  .swatch--gray .swatch__chip{background:#D1D0CF;color:var(--ink)}
+
+  /* extended grayscale */
+  .scale{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}
+  .scale .step{border-radius:10px;padding:18px 14px;font-family:var(--mono);font-size:11px;border:1px solid rgba(20,22,26,.06);min-height:80px;display:flex;flex-direction:column;justify-content:space-between}
+  .scale .step .h{color:rgba(0,0,0,.5)}
+  .step.dark{color:#fff} .step.dark .h{color:rgba(255,255,255,.6)}
+
+  /* Type */
+  .type{display:grid;gap:18px}
+  .type-row{display:grid;grid-template-columns:160px 1fr 200px;gap:32px;align-items:end;padding:18px 0;border-bottom:1px dashed rgba(20,22,26,.12)}
+  .type-row:last-child{border-bottom:0}
+  .type-row .label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft)}
+  .type-row .sample{color:var(--ink)}
+  .type-row .meta{font-family:var(--mono);font-size:11px;color:var(--mute);text-align:right;letter-spacing:.04em}
+  .t-h1{font-size:84px;font-weight:300;letter-spacing:-0.03em;line-height:1}
+  .t-h1 em{font-style:normal;font-weight:600}
+  .t-h2{font-size:54px;font-weight:300;letter-spacing:-0.025em;line-height:1.02}
+  .t-h2 em{font-style:normal;font-weight:500}
+  .t-h3{font-size:32px;font-weight:400;letter-spacing:-0.02em;line-height:1.05}
+  .t-h4{font-size:22px;font-weight:500;letter-spacing:-0.01em}
+  .t-body{font-size:16px;font-weight:300;line-height:1.55;color:var(--text-soft);max-width:60ch}
+  .t-small{font-size:13px;color:var(--text-soft)}
+  .t-eyebrow{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--text-soft)}
+  .t-mono{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--ink)}
+
+  /* Buttons */
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;background:#fff;color:var(--ink);font-size:14px;font-weight:500;transition:.25s;border:1px solid transparent}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 10px 30px -10px rgba(0,0,0,.25)}
+  .btn--gold{background:var(--gold);color:var(--ink)}
+  .btn--gold:hover{background:#fcd96b}
+  .btn--dark{background:var(--ink-2);color:#fff}
+  .btn--ghost{background:transparent;color:var(--ink);border-color:rgba(20,22,26,.18)}
+  .btn .arrow{width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.08);display:inline-grid;place-items:center;font-size:12px;transition:.25s}
+  .btn--gold .arrow{background:var(--ink-2);color:var(--gold)}
+  .btn--dark .arrow{background:var(--gold);color:var(--ink-2)}
+  .btn:hover .arrow{transform:translateX(2px)}
+
+  .btn-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .btn-row + .btn-row{margin-top:14px}
+
+  .icon-btn{width:42px;height:42px;border-radius:50%;display:inline-grid;place-items:center;border:1px solid rgba(20,22,26,.14);transition:.2s}
+  .icon-btn:hover{background:var(--ink-2);color:#fff;border-color:var(--ink-2)}
+
+  /* Tokens */
+  .tokens{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .token-card{background:#fff;border:1px solid rgba(20,22,26,.06);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;min-height:140px}
+  .token-card .label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft)}
+  .token-card .value{font-family:var(--mono);font-size:13px;color:var(--ink)}
+  .demo-radius{flex:1;display:flex;align-items:flex-end;gap:10px}
+  .demo-radius .box{width:48px;height:48px;background:var(--ink-2)}
+  .demo-shadow .box{height:60px;background:#fff;border:1px solid rgba(20,22,26,.06)}
+  .s1{box-shadow:0 1px 0 rgba(20,22,26,.06)}
+  .s2{box-shadow:0 10px 30px -10px rgba(0,0,0,.25)}
+  .s3{box-shadow:0 30px 80px -40px rgba(15,17,22,.35)}
+  .demo-spacing{display:flex;align-items:flex-end;gap:6px}
+  .demo-spacing .bar{background:var(--gold);width:14px}
+
+  /* Components preview */
+  .components{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .comp{background:#fff;border:1px solid rgba(20,22,26,.06);border-radius:18px;padding:24px}
+  .comp h4{margin:0 0 14px;font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft)}
+  .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(20,22,26,.05);padding:6px 11px;border-radius:999px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;color:var(--ink)}
+  .badge--dark{background:rgba(20,22,26,.85);color:#fff}
+  .badge--gold{background:var(--gold);color:var(--ink)}
+  .badge .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+  .badge-row{display:flex;flex-wrap:wrap;gap:8px}
+
+  .card-prop{
+    border-radius:14px;overflow:hidden;border:1px solid rgba(20,22,26,.06);background:#fff;
+  }
+  .card-prop__img{aspect-ratio:4/3;background:url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=900&q=85') center/cover;position:relative}
+  .card-prop__img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.4))}
+  .card-prop__img .top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:2}
+  .card-prop__img .bot{position:absolute;bottom:12px;left:14px;right:14px;color:#fff;font-size:12px;display:flex;justify-content:space-between;z-index:2}
+  .card-prop__img .bot .id{font-family:var(--mono);opacity:.8}
+  .card-prop__body{padding:18px 20px}
+  .card-prop__title{font-size:18px;font-weight:500;margin:0 0 12px}
+  .card-prop__feats{display:flex;gap:14px;font-size:12.5px;color:var(--text-soft);padding-top:12px;border-top:1px solid rgba(20,22,26,.08)}
+  .card-prop__feats b{color:var(--ink);font-weight:500}
+  .card-prop__foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+  .card-prop__foot .price{font-size:18px;font-weight:600;letter-spacing:-0.01em}
+  .card-prop__foot .more{font-size:12px;color:var(--text-soft)}
+
+  .input-grp{display:flex;flex-direction:column;gap:6px;padding:14px 18px;border:1px solid rgba(20,22,26,.1);border-radius:12px;background:#fff;max-width:320px}
+  .input-grp label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);font-weight:500}
+  .input-grp input{border:0;outline:none;font-size:15px;color:var(--ink);font-family:inherit;font-weight:500;background:transparent}
+  .input-grp input::placeholder{color:#aab0b8;font-weight:400}
+
+  .chip{padding:8px 14px;border-radius:999px;background:var(--paper-2);font-size:12.5px;color:var(--text-soft);display:inline-flex;align-items:center;gap:8px;border:1px solid transparent}
+  .chip:hover{background:#fff;border-color:rgba(20,22,26,.1);color:var(--ink)}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px}
+
+  /* Logo card */
+  .logos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .logo-card{border-radius:18px;padding:48px;display:grid;place-items:center;min-height:200px;border:1px solid rgba(20,22,26,.06)}
+  .logo-card.light{background:#fff}
+  .logo-card.dark{background:var(--ink-2)}
+  .logo-card img{max-width:60%;height:auto}
+
+  @media(max-width:980px){
+    .colors,.tokens,.components,.logos{grid-template-columns:1fr}
+    .scale{grid-template-columns:repeat(3,1fr)}
+    .sg-head{grid-template-columns:1fr;gap:16px}
+    .type-row{grid-template-columns:1fr;gap:8px}
+    .type-row .meta{text-align:left}
+    .t-h1{font-size:54px}
+    .t-h2{font-size:38px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap sg-top">
+  <div class="brand">
+    <img src="assets/logo-dark.svg" alt="Plus Investment">
+    <span class="label">Style Guide · v1</span>
+  </div>
+  <div class="links">
+    <a href="#colors">Цвета</a>
+    <a href="#type">Типографика</a>
+    <a href="#buttons">Кнопки</a>
+    <a href="#tokens">Токены</a>
+    <a href="#components">Компоненты</a>
+  </div>
+  <a href="Plus Investment.html" class="back">← На сайт</a>
+</div>
+
+<div class="wrap sg-hero">
+  <h1>Дизайн-<em>система</em><br><span class="gold">Plus Investment.</span></h1>
+  <p>Базовый набор токенов: цвета бренда, типографика, отступы, радиусы, тени и ключевые компоненты, использованные на главной странице. Здесь можно сверять и корректировать любые визуальные решения.</p>
+  <div class="meta">
+    <span>Версия<b>v1.0</b></span>
+    <span>Дата<b>05.05.2026</b></span>
+    <span>Шрифты<b>Inter · JetBrains Mono</b></span>
+    <span>Брендовые цвета<b>3 + scale</b></span>
+  </div>
+</div>
+
+<!-- Logo -->
+<section class="sg" id="logo">
+  <div class="wrap">
+    <div class="sg-head">
+      <div>
+        <div class="num">01 · Логотип</div>
+        <h2>Логотип</h2>
+      </div>
+      <p class="desc">Основной знак Plus Investment в двух версиях — для светлого и тёмного фона. Минимальная высота — 28px. Не размещаем поверх «шумных» фотографий без подложки.</p>
+    </div>
+    <div class="logos">
+      <div class="logo-card light"><img src="assets/logo-dark.svg" alt="Plus Investment — light bg"></div>
+      <div class="logo-card dark"><img src="assets/logo-light.svg" alt="Plus Investment — dark bg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Colors -->
+<section class="sg" id="colors">
+  <div class="wrap">
+    <div class="sg-head">
+      <div>
+        <div class="num">02 · Цвета</div>
+        <h2>Палитра</h2>
+      </div>
+      <p class="desc">Основные брендовые цвета: тёмный «#222429», светло-серый «#D1D0CF» и акцентный жёлтый «#F5CA3A». Все остальные оттенки производные от них. Светлые секции — холодно-серые, не белые и не кремовые.</p>
+    </div>
+
+    <div class="colors">
+      <div class="swatch swatch--ink">
+        <div class="swatch__chip"><span class="role">Ink · primary</span><span class="name">#222429</span></div>
+        <div class="swatch__meta"><span class="hex">#222429</span><span class="copy">фон тёмных секций, текст</span></div>
+      </div>
+      <div class="swatch swatch--gray">
+        <div class="swatch__chip"><span class="role">Neutral</span><span class="name">#D1D0CF</span></div>
+        <div class="swatch__meta"><span class="hex">#D1D0CF</span><span class="copy">фирменный нейтральный</span></div>
+      </div>
+      <div class="swatch swatch--gold">
+        <div class="swatch__chip"><span class="role">Accent</span><span class="name">#F5CA3A</span></div>
+        <div class="swatch__meta"><span class="hex">#F5CA3A</span><span class="copy">CTA, акценты, plus-знак</span></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft);margin:32px 0 12px">Cool gray scale (для светлых секций)</h3>
+    <div class="scale">
+      <div class="step" style="background:#fafbfc"><span>Paper 0</span><span class="h">#fafbfc</span></div>
+      <div class="step" style="background:#eef0f2"><span>Paper 1</span><span class="h">#eef0f2</span></div>
+      <div class="step" style="background:#e6e8eb"><span>Paper 2</span><span class="h">#e6e8eb</span></div>
+      <div class="step" style="background:#dadde1"><span>Paper 3</span><span class="h">#dadde1</span></div>
+      <div class="step dark" style="background:#54585f"><span>Text soft</span><span class="h">#54585f</span></div>
+      <div class="step dark" style="background:#15171b"><span>Ink deep</span><span class="h">#15171b</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Typography -->
+<section class="sg" id="type">
+  <div class="wrap">
+    <div class="sg-head">
+      <div>
+        <div class="num">03 · Типографика</div>
+        <h2>Шрифт и масштаб</h2>
+      </div>
+      <p class="desc">Основной шрифт — <b>Inter</b> (замена Zona Bold Pro), технические подписи — <b>JetBrains Mono</b>. Заголовки тонкие (300/400) с акцентами в 500–600 для драматургии. Узкий межбуквенный интервал (-0.02 / -0.03em) даёт «архитектурный» характер.</p>
+    </div>
+
+    <div class="type">
+      <div class="type-row">
+        <span class="label">H1 · Hero</span>
+        <span class="sample t-h1">Подберём <em>недвижимость</em></span>
+        <span class="meta">84/300 · -0.03em</span>
+      </div>
+      <div class="type-row">
+        <span class="label">H2 · Section</span>
+        <span class="sample t-h2">Объекты, на которые <em>смотрят сейчас.</em></span>
+        <span class="meta">54/300 · -0.025em</span>
+      </div>
+      <div class="type-row">
+        <span class="label">H3</span>
+        <span class="sample t-h3">Виллы у моря на побережье</span>
+        <span class="meta">32/400 · -0.02em</span>
+      </div>
+      <div class="type-row">
+        <span class="label">H4 · Card title</span>
+        <span class="sample t-h4">Skyline Residences</span>
+        <span class="meta">22/500 · -0.01em</span>
+      </div>
+      <div class="type-row">
+        <span class="label">Body</span>
+        <span class="sample t-body">Инвестиции, переезд или отдых — разные задачи требуют разных решений. Помогаем подобрать объект под цель и сопровождаем до сделки.</span>
+        <span class="meta">16/300 · 1.55</span>
+      </div>
+      <div class="type-row">
+        <span class="label">Small</span>
+        <span class="sample t-small">Карточка обновлена 05.05.2026</span>
+        <span class="meta">13/400</span>
+      </div>
+      <div class="type-row">
+        <span class="label">Eyebrow</span>
+        <span class="sample t-eyebrow">— Популярные объекты</span>
+        <span class="meta">11/500 · 0.22em uppercase</span>
+      </div>
+      <div class="type-row">
+        <span class="label">Mono · Tech</span>
+        <span class="sample t-mono">PI-0427 · 36.5444° N</span>
+        <span class="meta">JetBrains Mono 13/400</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Buttons -->
+<section class="sg" id="buttons">
+  <div class="wrap">
+    <div class="sg-head">
+      <div>
+        <div class="num">04 · Кнопки</div>
+        <h2>CTA и controls</h2>
+      </div>
+      <p class="desc">Pill-shape (radius:999px), 12×22 padding, маленькая «стрелка-капля» внутри круга справа. Жёлтая — основной CTA, тёмная — вторичный, ghost — для тёмных фонов.</p>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn--gold">Подобрать недвижимость <span class="arrow">→</span></button>
+      <button class="btn btn--dark">Показать объекты <span class="arrow">→</span></button>
+      <button class="btn btn--ghost">Расширенный поиск <span class="arrow">→</span></button>
+      <button class="btn">Подробнее <span class="arrow">→</span></button>
+    </div>
+    <div class="btn-row" style="margin-top:18px">
+      <button class="icon-btn" aria-label="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="icon-btn" aria-label="prev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button class="icon-btn" aria-label="next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg></button>
+      <button class="icon-btn" aria-label="fav"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.35-7-10a4.5 4.5 0 0 1 8-2.78A4.5 4.5 0 0 1 19 11c0 5.65-7 10-7 10z"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- Tokens -->
+<section class="sg" id="tokens">
+  <div class="wrap">
+    <div class="sg-head">
+      <div>
+        <div class="num">05 · Токены</div>
+        <h2>Радиусы · отступы · тени</h2>
+      </div>
+      <p class="desc">Мягкие радиусы и сдержанные тени поддерживают премиальный, спокойный характер. Для «подъёма» используется длинная мягкая тень, не глубокая.</p>
+    </div>
+
+    <div class="tokens">
+      <div class="token-card">
+        <span class="label">Радиусы</span>
+        <div class="demo-radius">
+          <div class="box" style="border-radius:10px"></div>
+          <div class="box" style="border-radius:16px"></div>
+          <div class="box" style="border-radius:22px"></div>
+          <div class="box" style="border-radius:999px"></div>
+        </div>
+        <span class="value">10 / 16 / 22 / 999</span>
+      </div>
+      <div class="token-card demo-shadow">
+        <span class="label">Тени</span>
+        <div class="demo-radius" style="gap:14px">
+          <div class="box s1" style="flex:1"></div>
+          <div class="box s2" style="flex:1"></div>
+          <div class="box s3" style="flex:1"></div>
+        </div>
+        <span class="value">flat / hover / elevated</span>
+      </div>
+      <div class="token-card">
+        <span class="label">Отступы (8-pt grid)</span>
+        <div class="demo-spacing">
+          <div class="bar" style="height:8px"></div>
+          <div class="bar" style="height:14px"></div>
+          <div class="bar" style="height:22px"></div>
+          <div class="bar" style="height:32px"></div>
+          <div class="bar" style="height:48px"></div>
+          <div class="bar" style="height:64px"></div>
+          <div class="bar" style="height:96px"></div>
+        </div>
+        <span class="value">8 · 14 · 22 · 32 · 48 · 64 · 96</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Components -->
+<section class="sg" id="components">
+  <div class="wrap">
+    <div class="sg-head">
+      <div>
+        <div class="num">06 · Компоненты</div>
+        <h2>Базовые блоки</h2>
+      </div>
+      <p class="desc">Бейджи, чипы, поля ввода и карточка объекта в их стандартном виде. На сайте они комбинируются и приобретают контекстные стили (overlay на feature-карточке, glass-стили на тёмных секциях и т.п.).</p>
+    </div>
+
+    <div class="components">
+      <div class="comp">
+        <h4>Бейджи (плашки)</h4>
+        <div class="badge-row">
+          <span class="badge badge--gold"><span class="dot"></span>Горячее предложение</span>
+          <span class="badge badge--dark"><span class="dot"></span>Новостройка</span>
+          <span class="badge"><span class="dot"></span>Готов</span>
+          <span class="badge"><span class="dot"></span>Рассрочка</span>
+          <span class="badge"><span class="dot"></span>Под гражданство</span>
+        </div>
+      </div>
+
+      <div class="comp">
+        <h4>Чипы / фильтры</h4>
+        <div class="chip-row">
+          <span class="chip">У моря</span>
+          <span class="chip">1+1</span>
+          <span class="chip">Под аренду</span>
+          <span class="chip">С бассейном</span>
+          <span class="chip">Готовые ключи</span>
+          <span class="chip">До € 200 000</span>
+        </div>
+      </div>
+
+      <div class="comp">
+        <h4>Поле ввода</h4>
+        <div class="input-grp">
+          <label>Контакт</label>
+          <input type="tel" placeholder="Телефон / WhatsApp">
+        </div>
+      </div>
+
+      <div class="comp">
+        <h4>Карточка объекта</h4>
+        <div class="card-prop">
+          <div class="card-prop__img">
+            <div class="top">
+              <span class="badge badge--gold"><span class="dot"></span>Хит</span>
+              <span class="badge"><span class="dot"></span>1+1</span>
+            </div>
+            <div class="bot"><span>Mahmutlar · Alanya</span><span class="id">PI-0314</span></div>
+          </div>
+          <div class="card-prop__body">
+            <h3 class="card-prop__title">Skyline Residences</h3>
+            <div class="card-prop__feats">
+              <span><b>1+1</b></span><span><b>1</b> с/у</span><span><b>62</b> м²</span>
+            </div>
+            <div class="card-prop__foot">
+              <span class="price">€ 168 000</span>
+              <span class="more">Подробнее →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap" style="padding:80px 0;border-top:1px solid rgba(20,22,26,.08);text-align:center;color:var(--text-soft);font-size:13px">
+  Plus Investment · Style Guide v1.0 · 05.05.2026
+</div>
+
+</body>
+</html>

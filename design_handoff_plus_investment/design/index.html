@@ -1,0 +1,2433 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plus Investment — Подберём недвижимость в Турции под вашу цель</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15171b; --ink-2:#222429; --ink-3:#2c2f36;
+    --paper:#eef0f2; --paper-2:#e6e8eb; --paper-3:#dadde1;
+    --mute:#9aa0a6; --text:#1a1c20; --text-soft:#54585f;
+    --gold:#f5ca3a; --gold-deep:#e3b524;
+    --radius-s:10px; --radius-m:16px; --radius-l:22px;
+    --container:1320px; --pad: clamp(20px, 4vw, 56px);
+    --sans:"Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);color:var(--text);background:var(--paper);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  img{max-width:100%;display:block}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--container);margin-inline:auto;padding-inline:var(--pad)}
+
+  /* ===== HEADER ===== */
+  .topbar{position:absolute;left:0;right:0;top:0;z-index:30;color:#dcdee2;transition:background .35s ease,border-color .35s ease}
+  .topbar.is-pinned{position:fixed;background:rgba(20,22,26,.72);backdrop-filter:blur(18px) saturate(1.1);-webkit-backdrop-filter:blur(18px) saturate(1.1);border-bottom:1px solid rgba(255,255,255,.06)}
+  .topbar__row{display:flex;align-items:center;justify-content:space-between;height:42px;font-size:12px;letter-spacing:.04em;color:rgba(220,222,226,.7);border-bottom:1px solid rgba(255,255,255,.06)}
+  .topbar__row a:hover{color:#fff}
+  .topbar__row .meta{display:flex;gap:18px;align-items:center}
+  .topbar__row .meta .phone{display:inline-flex;align-items:center;gap:10px;color:#fff;font-weight:500;letter-spacing:.02em}
+  .topbar__row .meta .messengers{display:inline-flex;gap:6px;align-items:center}
+  .topbar__row .meta .messengers a{width:24px;height:24px;border-radius:50%;display:inline-grid;place-items:center;background:rgba(255,255,255,.08);transition:.2s}
+  .topbar__row .meta .messengers a:hover{background:rgba(255,255,255,.18)}
+  .topbar__row .meta .messengers svg{width:13px;height:13px;display:block;color:#dcdee2}
+  .topbar__row .meta .tg:hover svg{color:#37aee2}
+  .topbar__row .meta .wa:hover svg{color:#25d366}
+  .topbar__row .socials{display:flex;gap:14px;align-items:center}
+  .topbar__row .socials a{opacity:.7;transition:.2s}
+  .topbar__row .socials a:hover{opacity:1}
+  .topbar__row .socials svg{width:14px;height:14px;display:block}
+  .topbar__row .lang{display:flex;gap:14px;align-items:center}
+  .topbar__row .lang button{font-size:12px;color:rgba(220,222,226,.55);padding:0;letter-spacing:.06em}
+  .topbar__row .lang button.is-active{color:#fff}
+  .sep{width:1px;height:12px;background:rgba(255,255,255,.14);display:inline-block}
+
+  .topbar__main{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:48px;height:78px}
+  .brand{display:inline-flex;align-items:center;gap:14px}
+  .brand img{height:36px;width:auto;display:block}
+  .brand-fallback{font-family:var(--sans);font-weight:600;font-size:22px;letter-spacing:-0.01em;color:#fff;display:inline-flex;align-items:center;gap:8px}
+  .brand-fallback .plus{color:var(--gold);font-weight:700}
+
+  .nav{display:flex;gap:32px;justify-content:center}
+  .nav a{font-size:14px;font-weight:400;color:#cfd2d7;padding:8px 2px;position:relative}
+  .nav a:hover{color:#fff}
+  .nav a.has-caret::after{content:"";display:inline-block;margin-left:6px;width:6px;height:6px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:translateY(-2px) rotate(45deg);opacity:.6}
+
+  .topbar__cta{display:flex;align-items:center;gap:12px}
+  .icon-btn{width:38px;height:38px;border-radius:50%;display:inline-grid;place-items:center;border:1px solid rgba(255,255,255,.14);color:#dcdee2;transition:.2s;background:transparent}
+  .icon-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+  .icon-btn svg{width:16px;height:16px;display:block}
+
+  .btn{--bg:#fff;--fg:#15171b;display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;background:var(--bg);color:var(--fg);font-size:14px;font-weight:500;transition:.25s;white-space:nowrap;border:1px solid transparent;cursor:pointer}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 10px 30px -10px rgba(0,0,0,.35)}
+  .btn--gold{--bg:#f5ca3a;--fg:#15171b}
+  .btn--gold:hover{--bg:#fcd96b}
+  .btn--ghost{--bg:transparent;--fg:#fff;border-color:rgba(255,255,255,.22)}
+  .btn--ghost:hover{--bg:rgba(255,255,255,.06)}
+  .btn--dark{--bg:#15171b;--fg:#fff}
+  .btn--lg{padding:18px 30px;font-size:15px}
+  .btn .arrow{width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.08);display:inline-grid;place-items:center;font-size:12px;transition:.25s}
+  .btn--gold .arrow{background:#15171b;color:#f5ca3a}
+  .btn--ghost .arrow{background:rgba(255,255,255,.12);color:#fff}
+  .btn:hover .arrow{transform:translateX(2px)}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;min-height:100vh;isolation:isolate;overflow:hidden;background:#0c0d10;color:#fff;padding-top:124px}
+  .hero__bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+  .hero__bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.02)}
+  .hero__bg .placeholder{position:absolute;inset:0;background:
+      radial-gradient(80% 60% at 70% 20%,rgba(245,202,58,.12),transparent 60%),
+      radial-gradient(60% 50% at 20% 80%,rgba(70,90,120,.45),transparent 60%),
+      linear-gradient(180deg,#0c0d10 0%,#15171b 60%,#0a0b0e 100%);
+      display:flex;align-items:center;justify-content:center}
+  .hero__bg .placeholder .ph-note{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.22);padding:8px 14px;border:1px dashed rgba(255,255,255,.14);border-radius:999px}
+  .hero__veil{position:absolute;inset:0;z-index:1;background:radial-gradient(120% 80% at 100% 0%,rgba(245,202,58,.10),transparent 55%),linear-gradient(180deg,rgba(12,13,16,.45) 0%,rgba(12,13,16,.30) 30%,rgba(12,13,16,.85) 100%)}
+
+  .hero__inner{position:relative;z-index:2;display:grid;grid-template-rows:1fr auto;min-height:calc(100vh - 124px);padding-bottom:48px}
+  .hero__eyebrow{display:inline-flex;align-items:center;gap:14px;padding:8px 14px 8px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(14px);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#dcdee2;margin-bottom:36px;width:fit-content}
+  .hero__eyebrow .pill{padding:4px 10px;border-radius:999px;background:#f5ca3a;color:#15171b;font-weight:600;letter-spacing:.16em}
+
+  .hero__title{font-weight:300;font-size:clamp(44px,6.6vw,104px);line-height:.98;letter-spacing:-0.035em;margin:0 0 26px;max-width:18ch;text-wrap:balance}
+  .hero__title em{font-style:normal;font-weight:600;background:linear-gradient(180deg,#fff 0%,#d6d8dc 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero__title .accent{color:var(--gold);font-weight:500}
+  .hero__sub{max-width:48ch;color:rgba(220,222,226,.78);font-size:clamp(15px,1.15vw,17px);line-height:1.55;margin:0 0 40px;font-weight:300}
+
+  .hero__cta-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+
+  .hero__bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-top:48px}
+  .hero__goals{display:flex;gap:32px;flex-wrap:wrap}
+  .goal{display:flex;align-items:center;gap:10px;color:rgba(220,222,226,.85);font-size:13px;letter-spacing:.04em}
+  .goal .num{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.16em}
+  .hero__scroll{display:flex;align-items:center;gap:12px;color:rgba(220,222,226,.6);font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+  .hero__scroll .line{width:80px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.45),transparent);position:relative;overflow:hidden}
+  .hero__scroll .line::after{content:"";position:absolute;left:-30%;top:0;bottom:0;width:30%;background:#fff;animation:scrollDot 2.4s ease-in-out infinite}
+  @keyframes scrollDot{0%{left:-30%}100%{left:130%}}
+
+  /* ===== Marquee ticker ===== */
+  .ticker{background:#15171b;color:rgba(255,255,255,.7);border-block:1px solid rgba(255,255,255,.06);overflow:hidden}
+  .ticker__track{display:flex;gap:48px;padding:18px 0;white-space:nowrap;animation:tick 40s linear infinite;width:max-content}
+  .ticker span{font-size:13px;letter-spacing:.18em;text-transform:uppercase;display:inline-flex;align-items:center;gap:48px}
+  .ticker span::after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gold)}
+  @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ===== SECTION HEADS ===== */
+  .section{padding:clamp(80px,8vw,128px) 0}
+  .section--tight{padding:clamp(48px,5vw,80px) 0}
+  .search-head{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;margin-bottom:32px}
+  .sec-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-soft);font-weight:500;margin-bottom:18px}
+  .sec-eyebrow::before{content:"";width:24px;height:1px;background:var(--gold)}
+  .sec-title{font-weight:300;font-size:clamp(32px,4vw,54px);line-height:1.02;letter-spacing:-0.025em;margin:0;max-width:20ch;text-wrap:balance}
+  .sec-title em{font-style:normal;font-weight:500}
+  .sec-sub{color:var(--text-soft);max-width:46ch;font-size:15px;line-height:1.55;margin:14px 0 0;font-weight:300}
+
+  /* ===== SEARCH ===== */
+  .search-card{background:#fff;border:1px solid rgba(20,22,26,.06);border-radius:var(--radius-l);box-shadow:0 30px 80px -40px rgba(15,17,22,.25);padding:8px}
+  .search-row{display:grid;grid-template-columns:repeat(8, 1fr);align-items:stretch;border-radius:14px;overflow:hidden;gap:0}
+  .search-field{padding:14px 18px;display:flex;flex-direction:column;gap:4px;border-right:1px solid rgba(20,22,26,.08);position:relative;min-width:0}
+  .search-field:last-of-type{border-right:0}
+  .search-field--wide{grid-column:span 2}
+  .search-field--narrow{grid-column:span 1}
+  .search-field label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);font-weight:500}
+  .search-field .val{font-size:14px;color:var(--ink);font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer}
+  .search-field .val .caret{opacity:.5;font-size:11px}
+  .search-field input,.search-field select{border:0;background:transparent;outline:none;font-size:14px;font-weight:500;color:var(--ink);padding:0;font-family:inherit;width:100%;appearance:none;-webkit-appearance:none}
+  .search-field input::placeholder{color:rgba(20,22,26,.35);font-weight:400}
+  .search-field select{cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%2354585f' stroke-width='1.4' fill='none'/></svg>");background-repeat:no-repeat;background-position:right 0 center;padding-right:18px}
+  .range-pair{display:flex;gap:8px;align-items:baseline}
+  .range-pair input{width:50%;font-size:14px;border-bottom:1px dashed rgba(20,22,26,.18);padding-bottom:2px}
+  .range-pair input:focus{border-bottom-color:var(--gold)}
+
+  .search-row--primary{background:#fff}
+  .search-submit-wrap{grid-column:span 1;display:flex;align-items:stretch;padding:6px}
+  .search-submit{flex:1;border-radius:10px;background:var(--ink-2);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:500;transition:.2s;padding:0 14px}
+  .search-submit:hover{background:#0e1014}
+  .search-submit svg{width:16px;height:16px}
+
+  .search-extra{display:flex;justify-content:space-between;align-items:center;padding:14px 22px 8px;flex-wrap:wrap;gap:16px}
+  .search-advanced{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--text-soft);font-weight:500;cursor:pointer;user-select:none}
+  .search-advanced .plus-icon{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--paper-2);color:var(--ink);font-weight:600;transition:.25s}
+  .search-advanced.is-open .plus-icon{background:var(--gold);transform:rotate(45deg)}
+  .search-advanced:hover{color:var(--ink)}
+  .search-id{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--mute)}
+  .search-id input{border:0;border-bottom:1px dashed rgba(20,22,26,.2);outline:none;font-family:var(--mono);font-size:12px;padding:4px 0;width:120px;background:transparent}
+
+  /* expanded filters */
+  .search-extended{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border-top:1px solid rgba(20,22,26,.08);margin-top:8px;border-radius:0 0 14px 14px;overflow:hidden;max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s ease,padding .3s ease;padding:0 0}
+  .search-extended.is-open{max-height:500px;opacity:1;padding:0 0}
+  .search-extended .search-field{border-bottom:0;border-right:1px solid rgba(20,22,26,.08)}
+  .search-extended .search-field:nth-child(6n){border-right:0}
+  .search-extended .search-field:nth-child(n+7){border-top:1px solid rgba(20,22,26,.08)}
+
+  /* ===== POPULAR ===== */
+  .sec-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:32px;margin-bottom:48px}
+  .sec-controls{display:flex;gap:8px;align-items:center}
+  .sec-link{font-size:13px;letter-spacing:.04em;color:var(--text-soft);display:inline-flex;gap:8px;align-items:center;padding:8px 0}
+  .sec-link:hover{color:var(--ink)}
+  .arrow-btn{width:42px;height:42px;border-radius:50%;border:1px solid rgba(20,22,26,.14);display:inline-grid;place-items:center;transition:.2s;background:transparent}
+  .arrow-btn:hover{background:var(--ink-2);color:#fff;border-color:var(--ink-2)}
+
+  .props{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .prop{background:#fff;border-radius:var(--radius-m);overflow:hidden;border:1px solid rgba(20,22,26,.06);transition:.3s;display:flex;flex-direction:column;position:relative}
+  .prop:hover{transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(15,17,22,.25)}
+  .prop__media{position:relative;aspect-ratio:4/3;overflow:hidden;background:#cdd0d4}
+  .prop__media img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.6,.2,1)}
+  .prop:hover .prop__media img{transform:scale(1.04)}
+  .prop__media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+  .prop__badges{position:absolute;top:14px;left:14px;right:14px;z-index:2;display:flex;justify-content:space-between;gap:8px}
+  .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);padding:6px 11px;border-radius:999px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;color:var(--ink)}
+  .badge--dark{background:rgba(20,22,26,.78);color:#fff}
+  .badge--gold{background:#f5ca3a;color:#15171b}
+  .badge .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+  .prop__fav{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);display:inline-grid;place-items:center;color:var(--ink-2);transition:.2s;cursor:pointer;border:0}
+  .prop__fav:hover{background:#fff}
+  .prop__fav svg{width:16px;height:16px;display:block}
+  .prop__meta-bottom{position:absolute;bottom:14px;left:14px;right:14px;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;color:#fff}
+  .prop__loc{font-size:13px;display:inline-flex;align-items:center;gap:6px}
+  .prop__loc svg{width:14px;height:14px;opacity:.85}
+  .prop__id{font-family:var(--mono);font-size:11px;letter-spacing:.16em;opacity:.85}
+
+  .prop__body{padding:22px 22px 22px;display:flex;flex-direction:column;gap:14px;flex:1}
+  .prop__title{font-weight:500;font-size:19px;letter-spacing:-0.015em;line-height:1.25;color:var(--ink);margin:0;min-height:2.4em}
+  .prop__feats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 0;border-top:1px solid rgba(20,22,26,.08);border-bottom:1px solid rgba(20,22,26,.08)}
+  .feat{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text-soft);min-width:0}
+  .feat svg{width:15px;height:15px;color:var(--ink-2);flex-shrink:0}
+  .feat b{color:var(--ink);font-weight:500}
+  .prop__footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto}
+  .price{display:flex;flex-direction:column;gap:2px}
+  .price .cur{font-size:11px;color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+  .price .amt{font-size:22px;font-weight:600;letter-spacing:-0.02em;color:var(--ink);line-height:1}
+  .prop__cta{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink);padding:10px 16px;border-radius:999px;background:var(--paper-2);transition:.2s}
+  .prop__cta:hover{background:var(--ink-2);color:#fff}
+  .prop__cta .arrow{width:18px;height:18px;border-radius:50%;background:#fff;display:inline-grid;place-items:center;font-size:11px}
+  .prop__cta:hover .arrow{background:var(--gold);color:var(--ink)}
+
+  /* ============================================================
+     ===== 04b SHOWCASE — horizontal pinned developer portfolio ==
+     ============================================================ */
+  .showcase{position:relative;background:#0c0d10;color:#fff;overflow:hidden;isolation:isolate}
+  .showcase::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(60% 50% at 80% 0%,rgba(245,202,58,.10),transparent 60%),radial-gradient(50% 50% at 0% 100%,rgba(80,100,140,.12),transparent 60%)}
+  .showcase::after{content:"";position:absolute;inset:0;z-index:0;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(ellipse 60% 60% at 50% 50%,#000 40%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse 60% 60% at 50% 50%,#000 40%,transparent 80%);opacity:.5;pointer-events:none}
+  .showcase__runway{position:relative;height:380vh}
+  .showcase__pin{position:sticky;top:0;height:100vh;width:100%;overflow:hidden;display:flex;flex-direction:column;padding-top:clamp(72px,7vw,112px);padding-bottom:clamp(56px,5vw,80px);box-sizing:border-box;z-index:1}
+
+  .showcase__head{position:relative;z-index:5;padding:0 var(--pad);max-width:var(--container);margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:auto;width:100%;box-sizing:border-box;flex-shrink:0}
+  .showcase__head .sec-eyebrow{color:rgba(220,222,226,.55);margin-bottom:14px}
+  .showcase__head .sec-eyebrow::before{background:var(--gold)}
+  .showcase__head .sec-title{font-weight:300;font-size:clamp(36px,4.6vw,64px);line-height:1.02;letter-spacing:-0.025em;margin:0;color:#fff;max-width:18ch;text-wrap:balance}
+  .showcase__head .sec-title em{font-style:normal;font-weight:500;color:#fff}
+  .showcase__head .sec-title .accent{color:var(--gold);font-weight:500}
+  .showcase__progress{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(220,222,226,.55);display:flex;align-items:center;gap:18px}
+  .showcase__progress .bar{width:140px;height:1px;background:rgba(255,255,255,.15);position:relative;overflow:hidden}
+  .showcase__progress .bar::after{content:"";position:absolute;left:0;top:0;height:100%;width:var(--p,0%);background:linear-gradient(90deg,var(--gold),#fff);transition:width .15s linear}
+  .showcase__progress .count b{color:#fff;font-weight:500}
+
+  .showcase__viewport{position:relative;z-index:2;width:100%;overflow:hidden;display:flex;align-items:center;flex:1;margin-top:40px}
+  .showcase__track{display:flex;gap:32px;padding-left:var(--pad);padding-right:var(--pad);will-change:transform;transition:transform .12s cubic-bezier(.2,.7,.2,1);align-items:stretch}
+
+  .sc-card{flex:0 0 calc(100vw - 2 * var(--pad));max-width:1180px;border-radius:28px;overflow:hidden;display:grid;grid-template-columns:1.55fr 1fr;gap:0;background:#15171b;border:1px solid rgba(255,255,255,.06);position:relative;min-height:min(78vh,720px)}
+  .sc-card__main{position:relative;overflow:hidden;background:#0a0b0e}
+  .sc-card__main::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(8,9,12,.85) 100%);z-index:1;pointer-events:none}
+  .sc-card__main img{position:absolute;inset:-8% -4%;width:108%;height:116%;object-fit:cover;will-change:transform;transition:transform 1.2s cubic-bezier(.2,.6,.2,1)}
+  .sc-card__side{position:relative;overflow:hidden;background:#0a0b0e;display:flex;flex-direction:column}
+  .sc-card__side-media{position:relative;flex:1;overflow:hidden;min-height:44%}
+  .sc-card__side-media img{position:absolute;inset:-8% -8%;width:116%;height:116%;object-fit:cover;will-change:transform;transition:transform 1.2s cubic-bezier(.2,.6,.2,1)}
+  .sc-card__side-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(0,0,0,.55) 100%);pointer-events:none}
+
+  /* badges overlay on main image */
+  .sc-card__badges{position:absolute;top:24px;left:24px;right:24px;z-index:3;display:flex;flex-wrap:wrap;gap:8px}
+  .sc-card .badge{background:rgba(255,255,255,.92);color:var(--ink);backdrop-filter:blur(10px);font-size:10.5px;letter-spacing:.14em;padding:7px 12px}
+  .sc-card .badge--gold{background:var(--gold);color:var(--ink)}
+  .sc-card .badge--dark{background:rgba(20,22,26,.7);color:#fff;border:1px solid rgba(255,255,255,.12)}
+
+  /* main title overlay on bottom-left of main image */
+  .sc-card__title-block{position:absolute;left:32px;right:32px;bottom:32px;z-index:3;color:#fff;display:flex;flex-direction:column;gap:10px}
+  .sc-card__num{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.55);display:inline-flex;align-items:center;gap:10px}
+  .sc-card__num::before{content:"";width:24px;height:1px;background:var(--gold)}
+  .sc-card__title{font-size:clamp(28px,3.6vw,46px);font-weight:400;letter-spacing:-0.025em;line-height:1.02;margin:0;max-width:14ch;text-wrap:balance}
+  .sc-card__title em{font-style:normal;font-weight:600}
+  .sc-card__loc{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.75);font-size:14px;margin-top:4px}
+  .sc-card__loc svg{width:14px;height:14px;opacity:.85}
+
+  /* info panel on right (below side image) */
+  .sc-card__info{padding:28px 32px 32px;display:flex;flex-direction:column;gap:22px;background:#15171b;color:#fff;flex-shrink:0}
+  .sc-card__price{display:flex;align-items:baseline;gap:12px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .sc-card__price .l{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(220,222,226,.5);font-family:var(--mono)}
+  .sc-card__price .v{font-size:26px;font-weight:600;letter-spacing:-0.02em;color:#fff}
+  .sc-card__specs{display:grid;grid-template-columns:1fr;gap:14px}
+  .sc-spec{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:baseline}
+  .sc-spec .l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(220,222,226,.45);font-family:var(--mono)}
+  .sc-spec .v{font-size:15px;color:#fff;font-weight:400}
+  .sc-card__cta{margin-top:auto;display:inline-flex;align-items:center;justify-content:space-between;padding:14px 18px 14px 22px;border-radius:999px;background:rgba(255,255,255,.06);color:#fff;font-size:14px;font-weight:500;border:1px solid rgba(255,255,255,.10);transition:.25s}
+  .sc-card__cta:hover{background:var(--gold);color:var(--ink);border-color:transparent}
+  .sc-card__cta .arrow{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--ink);display:inline-grid;place-items:center;font-size:12px;transition:.25s}
+  .sc-card__cta:hover .arrow{background:var(--ink);color:var(--gold)}
+
+  /* nudge into view: slight scale on active card */
+  .sc-card{transition:transform .8s cubic-bezier(.2,.6,.2,1),opacity .6s ease}
+
+  @media (max-width:1080px){
+    .sc-card{grid-template-columns:1fr;min-height:auto}
+    .sc-card__main{aspect-ratio:16/10}
+    .sc-card__side-media{aspect-ratio:16/9}
+    .sc-card__title{font-size:32px}
+  }
+  @media (max-width:900px), (hover:none){
+    .showcase__runway{height:auto}
+    .showcase__pin{position:relative;height:auto;padding:64px 0}
+    .showcase__head{flex-direction:column;align-items:flex-start}
+    .showcase__viewport{overflow:auto;scroll-snap-type:x mandatory;scrollbar-width:none;flex:none;margin-top:32px}
+    .showcase__viewport::-webkit-scrollbar{display:none}
+    .showcase__track{transform:none !important;padding-bottom:24px}
+    .sc-card{flex:0 0 88vw;scroll-snap-align:center}
+    .showcase__progress{display:none}
+  }
+
+  .seo{background:linear-gradient(180deg,var(--paper) 0%,var(--paper-2) 100%);position:relative;overflow:hidden}
+  .seo::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(20,22,26,.06) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 70% 50% at 50% 0%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 50% at 50% 0%,#000 30%,transparent 75%);pointer-events:none}
+  .seo .wrap{position:relative}
+  .seo__grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:200px;gap:14px}
+  .seo-card{position:relative;overflow:hidden;border-radius:var(--radius-m);background:#fff;border:1px solid rgba(20,22,26,.06);transition:.35s cubic-bezier(.2,.6,.2,1);display:flex;flex-direction:column;justify-content:flex-end;padding:26px;isolation:isolate;color:#fff}
+  .seo-card::before{content:"";position:absolute;inset:0;z-index:-1;background-size:cover;background-position:center;transition:transform .8s cubic-bezier(.2,.6,.2,1)}
+  .seo-card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(20,22,26,.10) 30%,rgba(20,22,26,.85) 100%)}
+  .seo-card:hover{transform:translateY(-3px)}
+  .seo-card:hover::before{transform:scale(1.06)}
+  .seo-card .seo__count{position:absolute;top:20px;right:20px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:rgba(255,255,255,.85);text-transform:uppercase;background:rgba(20,22,26,.55);backdrop-filter:blur(10px);padding:6px 10px;border-radius:999px}
+  .seo-card .seo__title{margin:0;font-weight:400;font-size:30px;letter-spacing:-0.02em;line-height:1.05;max-width:14ch}
+  .seo-card .seo__sub{color:rgba(255,255,255,.72);font-size:13px;margin:10px 0 0;font-weight:300;display:flex;align-items:center;gap:10px}
+  .seo-card .seo__sub .arrow-mini{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--ink);display:inline-grid;place-items:center;font-size:11px;transition:.25s}
+  .seo-card:hover .seo__sub .arrow-mini{transform:translateX(4px)}
+  .seo-1{grid-column:span 7;grid-row:span 2}
+  .seo-1 .seo__title{font-size:48px;letter-spacing:-0.025em}
+  .seo-2{grid-column:span 5;grid-row:span 2}
+  .seo-2 .seo__title{font-size:36px}
+  .seo-3{grid-column:span 5;grid-row:span 2}
+  .seo-4{grid-column:span 7;grid-row:span 2}
+  .seo-4 .seo__title{font-size:40px}
+
+  /* ===== FOOTER (reveal) ===== */
+  :root{--footer-h:740px}
+  body{background:#0c0d10;padding-bottom:var(--footer-h)}
+  .page-content{position:relative;z-index:2;background:var(--paper);border-bottom-left-radius:32px;border-bottom-right-radius:32px;overflow:hidden}
+
+  .site-footer{position:fixed;left:0;right:0;bottom:0;height:var(--footer-h);z-index:1;color:#dcdee2;background:#0c0d10;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;isolation:isolate}
+  .site-footer::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 70% at 90% 0%,rgba(245,202,58,.12),transparent 60%),radial-gradient(50% 60% at 0% 100%,rgba(120,150,200,.10),transparent 60%)}
+  .site-footer::after{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 60% 50% at 50% 0%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 0%,#000 30%,transparent 75%);opacity:.6;pointer-events:none}
+
+  /* hero strip */
+  .sf__hero{padding:56px var(--pad) 0;max-width:var(--container);margin:0 auto;width:100%;box-sizing:border-box}
+  .sf__hero .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(220,222,226,.55);font-weight:500;margin-bottom:18px}
+  .sf__hero .eyebrow::before{content:"";width:24px;height:1px;background:var(--gold)}
+  .sf__hero h2{font-weight:300;font-size:clamp(32px,4vw,52px);line-height:1.02;letter-spacing:-0.025em;margin:0 0 24px;color:#fff;max-width:24ch;text-wrap:balance}
+  .sf__hero h2 em{font-style:normal;font-weight:600;background:linear-gradient(180deg,#fff,#a8acb3);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sf__hero h2 .accent{color:var(--gold);font-weight:500}
+
+  /* columns */
+  .sf__cols{padding:48px var(--pad) 36px;max-width:var(--container);margin:0 auto;width:100%;box-sizing:border-box;display:grid;grid-template-columns:1.4fr 1fr 1.2fr .8fr 1.3fr;gap:48px;border-top:1px solid rgba(255,255,255,.08)}
+  .sf-col h4{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(220,222,226,.5);font-weight:500;margin:0 0 18px}
+  .sf-col--brand .brand-fallback{font-size:24px;margin-bottom:14px}
+  .sf-col--brand p{font-size:13px;line-height:1.6;color:rgba(220,222,226,.55);margin:0;font-weight:300;max-width:32ch}
+  .sf-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .sf-col ul a{font-size:14px;color:rgba(220,222,226,.75);transition:.2s;display:inline-flex;align-items:center;gap:8px}
+  .sf-col ul a:hover{color:#fff}
+  .sf-col ul a::before{content:"→";opacity:0;transform:translateX(-4px);transition:.25s;color:var(--gold);font-size:12px}
+  .sf-col ul a:hover::before{opacity:1;transform:translateX(0)}
+
+  .sf-contacts{display:flex;flex-direction:column;gap:14px}
+  .sf-contact{display:flex;flex-direction:column;gap:4px}
+  .sf-contact .l{font-size:11px;color:rgba(220,222,226,.4);letter-spacing:.05em}
+  .sf-contact .v{font-size:14px;color:#fff;font-weight:400;display:inline-flex;align-items:center;gap:10px}
+  .sf-contact .v a{color:#fff;transition:.2s}
+  .sf-contact .v a:hover{color:var(--gold)}
+  .sf-msg{display:inline-flex;gap:6px;align-items:center}
+  .sf-msg a{width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;background:rgba(255,255,255,.06);transition:.2s}
+  .sf-msg a svg{width:13px;height:13px;display:block;color:#dcdee2}
+  .sf-msg a.wa:hover{background:#25d366}
+  .sf-msg a.vb:hover{background:#7360f2}
+  .sf-msg a:hover svg{color:#fff}
+
+  .sf-socials{display:flex;flex-wrap:wrap;gap:10px}
+  .sf-socials a{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);display:inline-grid;place-items:center;color:rgba(220,222,226,.7);transition:.25s}
+  .sf-socials a:hover{background:var(--gold);border-color:var(--gold);color:var(--ink);transform:translateY(-2px)}
+  .sf-socials a svg{width:16px;height:16px;display:block}
+
+  .sf-sub{display:flex;flex-direction:column;gap:10px}
+  .sf-sub p{font-size:13px;color:rgba(220,222,226,.55);margin:0 0 4px;line-height:1.55;font-weight:300}
+  .sf-sub input{font-family:inherit;font-size:14px;color:#fff;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:13px 14px;outline:none;transition:.2s}
+  .sf-sub input::placeholder{color:rgba(220,222,226,.4)}
+  .sf-sub input:focus{border-color:var(--gold);background:rgba(245,202,58,.04)}
+  .sf-sub button{margin-top:4px;background:var(--gold);color:var(--ink);font-weight:600;font-size:14px;padding:13px 20px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;border:0;transition:.25s}
+  .sf-sub button:hover{background:#fcd96b}
+  .sf-sub button .arrow{width:20px;height:20px;border-radius:50%;background:var(--ink);color:var(--gold);display:inline-grid;place-items:center;font-size:11px}
+  .sf-sub.is-sent input,.sf-sub.is-sent button{display:none}
+  .sf-sub.is-sent .sf-sub__sent{display:flex;align-items:center;gap:10px;color:#5fbf72;font-size:14px;padding:13px 14px;background:rgba(95,191,114,.08);border-radius:12px}
+  .sf-sub__sent{display:none}
+  .sf-sub__sent svg{width:18px;height:18px}
+
+  /* bottom strip */
+  .sf__bottom{padding:20px var(--pad) 24px;max-width:var(--container);margin:0 auto;width:100%;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;gap:24px;border-top:1px solid rgba(255,255,255,.08);font-size:12px;color:rgba(220,222,226,.45);flex-wrap:wrap}
+  .sf__bottom a{color:rgba(220,222,226,.7);transition:.2s}
+  .sf__bottom a:hover{color:#fff}
+  .sf__bottom .dev a{border-bottom:1px dashed rgba(220,222,226,.3);padding-bottom:1px}
+
+  /* huge wordmark watermark behind footer */
+  .sf__watermark{position:absolute;left:50%;bottom:-30px;transform:translateX(-50%);font-size:clamp(120px,18vw,260px);font-weight:200;letter-spacing:-0.04em;color:rgba(255,255,255,.025);line-height:.85;pointer-events:none;user-select:none;white-space:nowrap;z-index:-1}
+
+  @media (max-width:1100px){
+    .sf__cols{grid-template-columns:1fr 1fr;gap:36px}
+    .sf-col--brand{grid-column:span 2}
+    :root{--footer-h:1080px}
+  }
+  @media (max-width:640px){
+    .sf__cols{grid-template-columns:1fr;gap:32px}
+    .sf-col--brand{grid-column:span 1}
+    .sf__hero{padding-top:40px}
+    :root{--footer-h:1280px}
+    .page-content{border-bottom-left-radius:20px;border-bottom-right-radius:20px}
+  }
+
+  /* ===== Reveal ===== */
+  [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.6,.2,1)}
+  [data-reveal].is-in{opacity:1;transform:none}
+
+  /* ===== MODAL ===== */
+  .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px}
+  .modal.is-open{display:flex}
+  .modal__backdrop{position:absolute;inset:0;background:rgba(8,9,12,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:fadeIn .25s ease}
+  .modal__card{position:relative;width:100%;max-width:520px;background:#fff;border-radius:var(--radius-l);padding:40px;box-shadow:0 40px 100px -20px rgba(0,0,0,.45);animation:popIn .35s cubic-bezier(.2,.7,.2,1)}
+  .modal__close{position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:50%;background:var(--paper-2);display:inline-grid;place-items:center;cursor:pointer;color:var(--ink);transition:.2s}
+  .modal__close:hover{background:var(--ink-2);color:#fff}
+  .modal__close svg{width:14px;height:14px}
+  .modal__eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-soft);margin-bottom:14px}
+  .modal__title{font-weight:400;font-size:32px;letter-spacing:-0.02em;line-height:1.1;margin:0 0 10px;color:var(--ink)}
+  .modal__title em{font-style:normal;font-weight:600}
+  .modal__sub{color:var(--text-soft);font-size:14px;line-height:1.55;margin:0 0 28px;font-weight:300}
+  .modal__form{display:grid;gap:14px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft);font-weight:500}
+  .field input,.field select{font-family:inherit;font-size:15px;font-weight:500;color:var(--ink);background:var(--paper);border:1px solid transparent;border-radius:12px;padding:14px 16px;outline:none;transition:.2s;appearance:none;-webkit-appearance:none}
+  .field input::placeholder{color:var(--mute);font-weight:400}
+  .field input:focus,.field select:focus{border-color:var(--ink);background:#fff}
+  .field select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%2354585f' stroke-width='1.6' fill='none'/></svg>");background-repeat:no-repeat;background-position:right 16px center;padding-right:42px;cursor:pointer}
+  .modal__submit{margin-top:8px;background:var(--ink-2);color:#fff;border-radius:999px;padding:16px 24px;font-size:15px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:.2s}
+  .modal__submit:hover{background:var(--gold);color:var(--ink)}
+  .modal__submit .arrow{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.14);display:inline-grid;place-items:center;font-size:12px}
+  .modal__submit:hover .arrow{background:var(--ink);color:var(--gold)}
+  .modal__legal{font-size:11px;color:var(--mute);line-height:1.5;text-align:center;margin:14px 0 0}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes popIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+
+  /* ===== Responsive ===== */
+  @media (max-width:1080px){
+    .nav{display:none}
+    .topbar__row .meta{gap:10px}
+    .props{grid-template-columns:repeat(2,1fr)}
+    .search-row{grid-template-columns:repeat(4,1fr)}
+    .search-field{grid-column:span 2}
+    .search-submit-wrap{grid-column:span 4;padding-top:12px}
+    .search-extended{grid-template-columns:repeat(3,1fr)}
+    .seo-1,.seo-2,.seo-3,.seo-4{grid-column:span 12}
+  }
+  @media (max-width:640px){
+    .topbar__row{display:none}
+    .hero{padding-top:90px}
+    .topbar__main{height:64px;gap:16px}
+    .brand img{height:30px}
+    .props{grid-template-columns:1fr}
+    .search-row{grid-template-columns:1fr}
+    .search-field{grid-column:span 1;border-right:0;border-bottom:1px solid rgba(20,22,26,.08)}
+    .search-extended{grid-template-columns:1fr}
+    .modal__card{padding:28px}
+    .modal__title{font-size:26px}
+  }
+
+  /* ============================================================
+     ===== 06  LEAD FORM (Получить подборку) — dark editorial =====
+     ============================================================ */
+  .lead-block{position:relative;background:#0c0d10;color:#fff;overflow:hidden;isolation:isolate;padding:clamp(80px,9vw,140px) 0}
+  .lead-block::before{content:"";position:absolute;inset:0;z-index:-1;
+    background:
+      radial-gradient(60% 70% at 90% 10%,rgba(245,202,58,.10),transparent 60%),
+      radial-gradient(60% 50% at 5% 100%,rgba(120,150,180,.10),transparent 60%),
+      linear-gradient(180deg,#0c0d10,#15171b 60%,#0a0b0e)}
+  .lead-block::after{content:"";position:absolute;inset:0;z-index:-1;
+    background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:32px 32px;
+    mask-image:radial-gradient(ellipse 60% 50% at 80% 30%,#000 30%,transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse 60% 50% at 80% 30%,#000 30%,transparent 75%);
+    opacity:.5}
+
+  .lead-block .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(48px,7vw,120px);align-items:start}
+  .lead-block .lb__copy{padding-top:8px}
+  .lead-block .sec-eyebrow{color:rgba(220,222,226,.55)}
+  .lead-block .sec-eyebrow::before{background:var(--gold)}
+  .lead-block h2{font-weight:300;font-size:clamp(40px,5.2vw,76px);line-height:.98;letter-spacing:-0.035em;margin:0 0 26px;max-width:14ch;text-wrap:balance;color:#fff}
+  .lead-block h2 em{font-style:normal;font-weight:600;background:linear-gradient(180deg,#fff,#a8acb3);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead-block h2 .accent{color:var(--gold);font-weight:500}
+  .lead-block .lb__sub{color:rgba(220,222,226,.7);font-size:17px;line-height:1.55;max-width:42ch;font-weight:300;margin:0 0 40px}
+
+  .lb__contacts{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:480px}
+  .lb__contact{padding:18px 20px;border:1px solid rgba(255,255,255,.10);border-radius:14px;background:rgba(255,255,255,.02);backdrop-filter:blur(8px);transition:.25s}
+  .lb__contact:hover{border-color:rgba(245,202,58,.4);background:rgba(245,202,58,.04)}
+  .lb__contact .l{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(220,222,226,.45);margin-bottom:6px}
+  .lb__contact .v{font-size:15px;font-weight:500;color:#fff}
+
+  .lb__divider{margin:48px 0 28px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.18),transparent 70%);max-width:420px}
+  .lb__assurance{display:flex;flex-direction:column;gap:14px;font-size:13px;color:rgba(220,222,226,.6);max-width:42ch;font-weight:300;line-height:1.55}
+  .lb__assurance .item{display:flex;gap:12px;align-items:flex-start}
+  .lb__assurance .ic{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(245,202,58,.16);color:var(--gold);display:inline-grid;place-items:center;font-size:10px;margin-top:2px}
+
+  /* form card */
+  .lb__form-wrap{position:relative}
+  .lb__form-wrap::before{content:"";position:absolute;inset:-1px;border-radius:24px;background:linear-gradient(140deg,rgba(245,202,58,.4),transparent 30%,rgba(255,255,255,.08) 60%,transparent);z-index:-1;filter:blur(.3px)}
+  .lb__form{background:rgba(20,22,26,.7);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:clamp(28px,3vw,40px);backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2);position:relative;overflow:hidden}
+  .lb__form-tag{position:absolute;top:24px;right:24px;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(220,222,226,.4);display:flex;align-items:center;gap:8px}
+  .lb__form-tag .pulse{width:6px;height:6px;border-radius:50%;background:#5fbf72;box-shadow:0 0 0 3px rgba(95,191,114,.18);animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .lb__form h3{font-size:22px;font-weight:500;letter-spacing:-0.015em;margin:0 0 6px;color:#fff}
+  .lb__form .lb__form-sub{font-size:13px;color:rgba(220,222,226,.55);margin:0 0 28px;font-weight:300}
+
+  .lb__field{position:relative;margin-bottom:18px}
+  .lb__field input,.lb__field textarea{
+    width:100%;font-family:inherit;font-size:15px;color:#fff;font-weight:400;
+    background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.16);
+    padding:22px 0 12px;outline:none;resize:none;transition:.25s}
+  .lb__field textarea{min-height:80px;line-height:1.5}
+  .lb__field input::placeholder,.lb__field textarea::placeholder{color:transparent}
+  .lb__field label{position:absolute;left:0;top:22px;font-size:15px;color:rgba(220,222,226,.5);pointer-events:none;transition:.25s;font-weight:400}
+  .lb__field input:focus + label,.lb__field input:not(:placeholder-shown) + label,
+  .lb__field textarea:focus + label,.lb__field textarea:not(:placeholder-shown) + label{
+    top:0;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,202,58,.85);font-weight:500}
+  .lb__field input:focus,.lb__field textarea:focus{border-bottom-color:var(--gold)}
+  .lb__field .err{display:none;position:absolute;left:0;bottom:-18px;font-size:11px;color:#ff6b6b;letter-spacing:.04em}
+  .lb__field.is-error input,.lb__field.is-error textarea{border-bottom-color:#ff6b6b}
+  .lb__field.is-error label{color:#ff6b6b}
+  .lb__field.is-error .err{display:block}
+
+  .lb__submit{margin-top:18px;width:100%;background:var(--gold);color:var(--ink);font-size:15px;font-weight:600;letter-spacing:-0.005em;padding:18px 26px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:.25s;border:0}
+  .lb__submit:hover{background:#fcd96b;transform:translateY(-2px);box-shadow:0 14px 40px -16px rgba(245,202,58,.6)}
+  .lb__submit .arrow{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--gold);display:inline-grid;place-items:center;font-size:12px;transition:.25s}
+  .lb__submit:hover .arrow{transform:translateX(3px)}
+  .lb__legal{margin-top:14px;font-size:11px;color:rgba(220,222,226,.4);text-align:center;line-height:1.55}
+  .lb__legal a{color:rgba(220,222,226,.7);border-bottom:1px solid rgba(220,222,226,.2)}
+
+  /* success state */
+  .lb__form.is-success .lb__field,
+  .lb__form.is-success .lb__submit,
+  .lb__form.is-success > h3,
+  .lb__form.is-success > .lb__form-sub,
+  .lb__form.is-success > .lb__legal{display:none}
+  .lb__success{display:none;text-align:center;padding:20px 0 8px}
+  .lb__form.is-success .lb__success{display:block;animation:popIn .5s cubic-bezier(.2,.7,.2,1)}
+  .lb__success .check{width:64px;height:64px;border-radius:50%;background:rgba(95,191,114,.16);color:#5fbf72;display:inline-grid;place-items:center;margin-bottom:20px}
+  .lb__success .check svg{width:28px;height:28px}
+  .lb__success h4{font-size:24px;font-weight:500;letter-spacing:-0.02em;margin:0 0 10px;color:#fff}
+  .lb__success p{color:rgba(220,222,226,.65);font-size:14px;line-height:1.55;margin:0;max-width:32ch;margin-inline:auto;font-weight:300}
+
+  /* ============================================================
+     ===== 07  WHY US — pinned horizontal scroll + glow wave =====
+     ============================================================ */
+  .why{position:relative;background:var(--paper);overflow:hidden}
+  /* runway height controls horizontal travel; kept tight so there's no empty tail */
+  .why__runway{position:relative;height:340vh}
+  .why__pin{position:sticky;top:0;height:100vh;width:100%;overflow:hidden;display:flex;flex-direction:column;padding-top:clamp(80px,8vw,128px);padding-bottom:clamp(60px,6vw,96px);box-sizing:border-box}
+  .why__head{position:relative;z-index:5;padding:0 var(--pad);max-width:var(--container);margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:auto;width:100%;box-sizing:border-box;flex-shrink:0}
+  .why__head .lead{max-width:48ch}
+  .why__head .sec-title{font-weight:300;font-size:clamp(36px,4.4vw,60px);line-height:1.04;letter-spacing:-0.025em;margin:0;text-wrap:balance}
+  .why__head .sec-title em{font-style:normal;font-weight:500}
+  .why__progress{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-soft);display:flex;align-items:center;gap:18px}
+  .why__progress .bar{width:120px;height:1px;background:rgba(20,22,26,.12);position:relative;overflow:hidden}
+  .why__progress .bar::after{content:"";position:absolute;left:0;top:0;height:100%;width:var(--p,0%);background:var(--ink);transition:width .15s linear}
+  .why__progress .count b{color:var(--ink);font-weight:500}
+  .why__progress .hint{margin-left:auto;display:inline-flex;align-items:center;gap:8px;color:var(--mute)}
+  .why__progress .hint svg{width:14px;height:14px}
+
+  .why__wave{position:absolute;left:0;top:55%;transform:translateY(-50%);width:100%;height:50%;z-index:1;pointer-events:none}
+  .why__wave svg{width:100%;height:100%;overflow:visible}
+  .why__wave .wave-bg{stroke:rgba(20,22,26,.08);stroke-width:1.5;fill:none}
+  .why__wave .wave-fg{stroke:var(--ink);stroke-width:1.5;fill:none;stroke-dasharray:var(--len,4000);stroke-dashoffset:calc(var(--len,4000) * (1 - var(--p-num,0)));transition:stroke-dashoffset .15s linear}
+  .why__wave .wave-glow{stroke:var(--gold);stroke-width:3;fill:none;opacity:.4;filter:blur(3px);stroke-dasharray:var(--len,4000);stroke-dashoffset:calc(var(--len,4000) * (1 - var(--p-num,0)));transition:stroke-dashoffset .15s linear}
+
+  .why__viewport{position:relative;z-index:3;width:100%;overflow:hidden;display:flex;align-items:center;flex:1}
+  .why__track{display:flex;gap:28px;padding-left:var(--pad);padding-right:calc(50vw - 200px);will-change:transform;transition:transform .08s linear;align-items:stretch}
+
+  /* clean static cards — no shadows, no hover/active highlights */
+  .why-card{flex:0 0 380px;background:#fff;border:1px solid rgba(20,22,26,.06);border-radius:var(--radius-l);padding:36px 32px;display:flex;flex-direction:column;gap:20px;min-height:440px;position:relative;overflow:hidden}
+  .why-card__num{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--mute);display:flex;align-items:center;gap:10px}
+  .why-card__num::before{content:"";width:24px;height:1px;background:var(--gold)}
+  .why-card__icon{width:54px;height:54px;border-radius:14px;background:var(--paper);display:inline-grid;place-items:center;color:var(--ink)}
+  .why-card__icon svg{width:26px;height:26px}
+  .why-card h3{font-size:22px;font-weight:500;letter-spacing:-0.015em;line-height:1.2;margin:0;color:var(--ink);max-width:14ch;text-wrap:balance}
+  .why-card p{font-size:14.5px;line-height:1.6;color:var(--text-soft);margin:0;font-weight:300;flex:1;text-wrap:pretty}
+  .why-card__corner{position:absolute;bottom:24px;right:28px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:rgba(20,22,26,.18);text-transform:uppercase}
+
+  @media (max-width:900px), (hover:none){
+    .why__runway{height:auto}
+    .why__pin{position:relative;height:auto;padding:64px 0}
+    .why__head{flex-direction:column;align-items:flex-start;padding:0 var(--pad);margin-bottom:32px}
+    .why__viewport{overflow:auto;scroll-snap-type:x mandatory;scrollbar-width:none;flex:none}
+    .why__viewport::-webkit-scrollbar{display:none}
+    .why__track{transform:none !important;padding-bottom:24px;padding-right:var(--pad)}
+    .why-card{flex:0 0 78vw;scroll-snap-align:center;min-height:auto}
+    .why__wave{display:none}
+    .why__progress{display:none}
+  }
+
+  /* ============================================================
+     ===== 09  TESTIMONIALS slider =================================
+     ============================================================ */
+  .tm{padding:clamp(80px,8vw,128px) 0;background:var(--paper);position:relative;overflow:hidden}
+  .tm__head{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;margin-bottom:48px}
+  .tm__head h2{font-weight:300;font-size:clamp(36px,4.4vw,60px);line-height:1.02;letter-spacing:-0.025em;margin:0;max-width:18ch}
+  .tm__head h2 em{font-style:normal;font-weight:500}
+  .tm__controls{display:flex;gap:8px;align-items:center}
+  .tm__viewport{position:relative;overflow:hidden;margin:0 calc(-1 * var(--pad));padding:0 var(--pad) 20px}
+  .tm__track{display:flex;gap:24px;transition:transform .6s cubic-bezier(.2,.7,.2,1);will-change:transform}
+  .tm-card{flex:0 0 calc((100% - 48px)/3);background:#fff;border:1px solid rgba(20,22,26,.06);border-radius:var(--radius-l);padding:32px;display:flex;flex-direction:column;gap:20px;min-height:360px;position:relative;transition:.3s}
+  .tm-card:hover{box-shadow:0 30px 60px -30px rgba(15,17,22,.2);transform:translateY(-3px)}
+  .tm-card--video{padding:0;overflow:hidden;background:#15171b;color:#fff}
+  .tm-card--video .tm-video{position:relative;aspect-ratio:16/10;overflow:hidden}
+  .tm-card--video .tm-video img{width:100%;height:100%;object-fit:cover}
+  .tm-card--video .tm-video::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1) 0%,rgba(0,0,0,0) 40%,rgba(0,0,0,.7) 100%)}
+  .tm-card--video .tm-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.95);color:var(--ink);display:inline-grid;place-items:center;z-index:2;transition:.3s}
+  .tm-card--video .tm-play svg{width:20px;height:20px;margin-left:2px}
+  .tm-card--video:hover .tm-play{background:var(--gold)}
+  .tm-card--video .tm__head-row,.tm-card--video .tm__text,.tm-card--video .tm__more{padding:0 28px}
+  .tm-card--video .tm__head-row{padding-top:24px}
+  .tm-card--video .tm__text{padding-bottom:8px}
+  .tm-card--video .tm__more{padding-bottom:24px}
+  .tm-card--video .tm__name{color:#fff}
+  .tm-card--video .tm__loc{color:rgba(220,222,226,.5)}
+  .tm-card--video .tm__text{color:rgba(220,222,226,.75)}
+  .tm__head-row{display:flex;align-items:center;gap:14px}
+  .tm__avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--paper-2)}
+  .tm__avatar img{width:100%;height:100%;object-fit:cover}
+  .tm__who{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .tm__name{font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-0.005em}
+  .tm__loc{font-size:12px;color:var(--text-soft);font-family:var(--mono);letter-spacing:.06em;display:flex;gap:8px;align-items:center}
+  .tm__loc .dot{width:3px;height:3px;border-radius:50%;background:currentColor}
+  .tm__quote{font-family:var(--mono);font-size:36px;line-height:1;color:var(--gold);opacity:.7;margin-top:-6px}
+  .tm__text{font-size:15px;line-height:1.6;color:var(--text);font-weight:300;flex:1;margin:0;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}
+  .tm-card.is-expanded .tm__text{-webkit-line-clamp:unset;display:block;overflow:visible}
+  .tm__more{font-size:13px;color:var(--ink);font-weight:500;display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;border:0;padding:0;width:fit-content}
+  .tm__more::after{content:"→";transition:.2s}
+  .tm__more:hover::after{transform:translateX(3px)}
+  .tm__more.hide{display:none}
+  .tm__nav{display:flex;justify-content:space-between;align-items:center;margin-top:32px}
+  .tm__dots{display:flex;gap:8px}
+  .tm__dot{width:24px;height:3px;border-radius:2px;background:rgba(20,22,26,.12);cursor:pointer;transition:.2s;border:0;padding:0}
+  .tm__dot.is-active{background:var(--ink);width:48px}
+  @media (max-width:900px){
+    .tm-card{flex:0 0 calc((100% - 24px)/2)}
+  }
+  @media (max-width:640px){
+    .tm-card{flex:0 0 88%}
+    .tm__head{grid-template-columns:1fr}
+  }
+
+  /* ============================================================
+     ===== 10  BLOG / Articles ===================================
+     ============================================================ */
+  .blog{padding:clamp(80px,8vw,128px) 0;background:var(--paper);position:relative;overflow:hidden}
+  .blog::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(20,22,26,.05) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 50% 40% at 50% 0%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 50% 40% at 50% 0%,#000 30%,transparent 75%);pointer-events:none}
+  .blog .wrap{position:relative}
+  .blog__head{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;margin-bottom:48px}
+  .blog__head h2{font-weight:300;font-size:clamp(36px,4.4vw,60px);line-height:1.02;letter-spacing:-0.025em;margin:0;max-width:20ch}
+  .blog__head h2 em{font-style:normal;font-weight:500}
+  .blog__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .article-card{background:#fff;border:1px solid rgba(20,22,26,.06);border-radius:var(--radius-l);overflow:hidden;display:flex;flex-direction:column;position:relative;transition:transform .5s cubic-bezier(.2,.6,.2,1),box-shadow .5s ease;isolation:isolate}
+  .article-card:hover{transform:translateY(-6px);box-shadow:0 40px 80px -40px rgba(15,17,22,.3)}
+  .article-card__media{position:relative;aspect-ratio:5/4;overflow:hidden;background:#dadde1}
+  .article-card__media img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.6,.2,1),filter .5s ease;will-change:transform}
+  .article-card:hover .article-card__media img{transform:scale(1.08);filter:brightness(.85)}
+  .article-card__media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(20,22,26,.6) 100%);opacity:0;transition:opacity .5s ease}
+  .article-card:hover .article-card__media::after{opacity:1}
+  /* hover-revealed read-CTA inside media */
+  .article-card__hover-cta{position:absolute;left:24px;bottom:24px;display:inline-flex;align-items:center;gap:12px;color:#fff;font-size:13px;font-weight:500;letter-spacing:.04em;opacity:0;transform:translateY(12px);transition:.5s cubic-bezier(.2,.6,.2,1);z-index:2}
+  .article-card:hover .article-card__hover-cta{opacity:1;transform:translateY(0)}
+  .article-card__hover-cta .a-arrow{width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--ink);display:inline-grid;place-items:center;font-size:14px;transition:transform .4s ease}
+  .article-card:hover .article-card__hover-cta .a-arrow{transform:rotate(-45deg)}
+  /* tag chip */
+  .article-card__tag{position:absolute;top:18px;left:18px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);padding:6px 11px;border-radius:999px;z-index:2;display:inline-flex;align-items:center;gap:7px}
+  .article-card__tag::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold)}
+  .article-card__body{padding:26px 28px 28px;display:flex;flex-direction:column;gap:14px;flex:1;background:#fff;position:relative;z-index:1}
+  .article-card__meta{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--text-soft)}
+  .article-card__meta .dot{width:3px;height:3px;border-radius:50%;background:currentColor}
+  .article-card__title{font-size:20px;font-weight:500;letter-spacing:-0.015em;line-height:1.25;margin:0;color:var(--ink);text-wrap:balance;transition:color .3s ease}
+  .article-card:hover .article-card__title{color:var(--ink-2)}
+  .article-card__title::after{content:"";display:block;width:32px;height:2px;background:var(--gold);margin-top:14px;transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.2,.6,.2,1)}
+  .article-card:hover .article-card__title::after{transform:scaleX(1)}
+  .article-card__excerpt{font-size:14px;line-height:1.55;color:var(--text-soft);font-weight:300;margin:0;flex:1}
+
+  .blog__footer{display:flex;justify-content:center;margin-top:56px}
+  .blog__all{display:inline-flex;align-items:center;gap:14px;padding:18px 32px;border-radius:999px;background:var(--ink-2);color:#fff;font-size:15px;font-weight:500;transition:.3s;border:1px solid transparent}
+  .blog__all:hover{background:var(--gold);color:var(--ink);transform:translateY(-2px);box-shadow:0 16px 40px -16px rgba(245,202,58,.5)}
+  .blog__all .a-arrow{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.14);display:inline-grid;place-items:center;font-size:12px;transition:.3s}
+  .blog__all:hover .a-arrow{background:var(--ink);color:var(--gold)}
+
+  @media (max-width:900px){
+    .blog__grid{grid-template-columns:repeat(2,1fr)}
+    .blog__head{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .blog__grid{grid-template-columns:1fr}
+  }
+
+  /* ============================================================
+     ===== 11  FAQ + Ask form ====================================
+     ============================================================ */
+  .faq{padding:clamp(80px,8vw,128px) 0;background:#fff;position:relative;overflow:hidden}
+  .faq .wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(48px,6vw,96px);align-items:start}
+  .faq__copy{position:sticky;top:120px}
+  .faq__copy h2{font-weight:300;font-size:clamp(36px,4.4vw,60px);line-height:1.02;letter-spacing:-0.025em;margin:0 0 16px;text-wrap:balance}
+  .faq__copy h2 em{font-style:normal;font-weight:500}
+  .faq__copy p{color:var(--text-soft);font-size:15px;line-height:1.6;margin:0 0 28px;max-width:38ch;font-weight:300}
+  .faq__hint{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-soft);padding:10px 14px;border:1px dashed rgba(20,22,26,.2);border-radius:999px}
+  .faq__hint .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+
+  .faq__list{display:flex;flex-direction:column;border-top:1px solid rgba(20,22,26,.1)}
+  .faq-item{border-bottom:1px solid rgba(20,22,26,.1)}
+  .faq-q{width:100%;text-align:left;padding:24px 0;display:flex;align-items:center;gap:24px;cursor:pointer;font-family:inherit;font-size:17px;font-weight:500;color:var(--ink);letter-spacing:-0.01em;background:none;border:0;transition:.25s}
+  .faq-q:hover{color:var(--ink-2);padding-left:6px}
+  .faq-q .num{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--mute);flex-shrink:0;font-weight:400;width:32px}
+  .faq-q .label{flex:1;text-wrap:balance}
+  .faq-q .toggle{flex-shrink:0;width:36px;height:36px;border-radius:50%;border:1px solid rgba(20,22,26,.14);display:inline-grid;place-items:center;transition:.3s;background:#fff}
+  .faq-q .toggle::before,.faq-q .toggle::after{content:"";position:absolute;width:12px;height:1.5px;background:var(--ink);transition:.3s}
+  .faq-q .toggle{position:relative}
+  .faq-q .toggle::after{transform:rotate(90deg)}
+  .faq-item.is-open .faq-q{color:var(--ink)}
+  .faq-item.is-open .faq-q .toggle{background:var(--gold);border-color:var(--gold)}
+  .faq-item.is-open .faq-q .toggle::after{transform:rotate(0)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.2,.6,.2,1)}
+  .faq-a__inner{padding:0 0 28px 56px;color:var(--text-soft);font-size:15px;line-height:1.65;font-weight:300;max-width:62ch;text-wrap:pretty}
+  .faq-a__inner p{margin:0 0 12px}
+  .faq-a__inner p:last-child{margin-bottom:0}
+
+  /* Inline ask form */
+  .ask{margin-top:clamp(80px,8vw,128px);position:relative;border-radius:24px;overflow:hidden;background:var(--ink-2);color:#fff;padding:clamp(40px,5vw,72px);isolation:isolate}
+  .ask::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 70% at 100% 0%,rgba(245,202,58,.16),transparent 60%),radial-gradient(50% 60% at 0% 100%,rgba(120,150,200,.10),transparent 60%)}
+  .ask__head{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:end;margin-bottom:36px}
+  .ask__head h3{font-weight:300;font-size:clamp(28px,3.2vw,40px);line-height:1.05;letter-spacing:-0.02em;margin:0;color:#fff;max-width:16ch;text-wrap:balance}
+  .ask__head h3 em{font-style:normal;font-weight:600}
+  .ask__head p{color:rgba(220,222,226,.65);font-size:14px;line-height:1.55;margin:0;font-weight:300;max-width:36ch}
+  .ask__form{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+  .ask__field{position:relative}
+  .ask__field--3{grid-column:span 4}
+  .ask__field--full{grid-column:span 12}
+  .ask__field input,.ask__field textarea{
+    width:100%;font-family:inherit;font-size:15px;color:#fff;font-weight:400;
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:14px;
+    padding:18px 18px 14px;outline:none;resize:none;transition:.25s}
+  .ask__field textarea{min-height:84px;line-height:1.5}
+  .ask__field input::placeholder,.ask__field textarea::placeholder{color:transparent}
+  .ask__field label{position:absolute;left:19px;top:18px;font-size:14px;color:rgba(220,222,226,.5);pointer-events:none;transition:.2s;background:transparent;padding:0 6px}
+  .ask__field input:focus,.ask__field textarea:focus{border-color:var(--gold);background:rgba(245,202,58,.04)}
+  .ask__field input:focus + label,.ask__field input:not(:placeholder-shown) + label,
+  .ask__field textarea:focus + label,.ask__field textarea:not(:placeholder-shown) + label{
+    top:-7px;left:14px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);background:var(--ink-2);padding:0 6px}
+  .ask__field.is-error input,.ask__field.is-error textarea{border-color:#ff6b6b}
+  .ask__submit-wrap{grid-column:span 12;display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:6px;flex-wrap:wrap}
+  .ask__legal{font-size:11px;color:rgba(220,222,226,.4);max-width:44ch;line-height:1.55}
+  .ask__legal a{color:rgba(220,222,226,.7);border-bottom:1px solid rgba(220,222,226,.2)}
+  .ask__submit{background:var(--gold);color:var(--ink);font-size:14px;font-weight:600;padding:16px 28px;border-radius:999px;display:inline-flex;align-items:center;gap:12px;cursor:pointer;border:0;transition:.25s}
+  .ask__submit:hover{transform:translateY(-2px);box-shadow:0 14px 40px -16px rgba(245,202,58,.6)}
+  .ask__submit .arrow{width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--gold);display:inline-grid;place-items:center;font-size:12px}
+  .ask.is-sent .ask__form{display:none}
+  .ask__sent{display:none;text-align:center;padding:20px 0}
+  .ask.is-sent .ask__sent{display:block;animation:popIn .5s cubic-bezier(.2,.7,.2,1)}
+  .ask__sent .check{width:60px;height:60px;border-radius:50%;background:rgba(95,191,114,.16);color:#5fbf72;display:inline-grid;place-items:center;margin:0 auto 18px}
+  .ask__sent .check svg{width:26px;height:26px}
+  .ask__sent h4{font-size:22px;font-weight:500;margin:0 0 8px;color:#fff}
+  .ask__sent p{color:rgba(220,222,226,.6);font-size:14px;margin:0}
+
+  @media (max-width:900px){
+    .faq .wrap{grid-template-columns:1fr;gap:48px}
+    .faq__copy{position:static}
+    .ask__head{grid-template-columns:1fr}
+    .ask__field--3{grid-column:span 12}
+  }
+
+  /* ============================================================
+     ===== 12  SEO TEXT BLOCK ====================================
+     ============================================================ */
+  .seo-text{padding:clamp(80px,8vw,120px) 0;background:var(--paper);position:relative}
+  .seo-text .wrap{display:grid;grid-template-columns:280px 1fr;gap:clamp(48px,6vw,96px);align-items:start;max-width:1180px}
+  .seo-text__side{position:sticky;top:120px}
+  .seo-text__side h2{font-weight:300;font-size:clamp(28px,3vw,36px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 18px;text-wrap:balance}
+  .seo-text__side h2 em{font-style:normal;font-weight:500}
+  .seo-text__toc{display:flex;flex-direction:column;gap:2px;border-left:1px solid rgba(20,22,26,.12);padding-left:18px}
+  .seo-text__toc a{font-size:13px;color:var(--text-soft);padding:6px 0;display:flex;gap:10px;align-items:center;transition:.2s}
+  .seo-text__toc a::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--mute);opacity:.5}
+  .seo-text__toc a:hover{color:var(--ink)}
+  .seo-text__toc a.is-active{color:var(--ink);font-weight:500}
+  .seo-text__toc a.is-active::before{background:var(--gold);opacity:1}
+
+  .seo-text__body{font-size:16px;line-height:1.7;color:var(--text);font-weight:300;max-width:68ch}
+  .seo-text__body > * + *{margin-top:18px}
+  .seo-text__body h2{font-weight:400;font-size:clamp(28px,3vw,36px);line-height:1.1;letter-spacing:-0.02em;margin:48px 0 12px;color:var(--ink)}
+  .seo-text__body h2:first-child{margin-top:0}
+  .seo-text__body h3{font-weight:500;font-size:20px;letter-spacing:-0.01em;margin:32px 0 8px;color:var(--ink)}
+  .seo-text__body p{margin:0;text-wrap:pretty}
+  .seo-text__body p strong{color:var(--ink);font-weight:500}
+  .seo-text__body ul,.seo-text__body ol{margin:8px 0;padding-left:0;list-style:none}
+  .seo-text__body ul li,.seo-text__body ol li{position:relative;padding-left:32px;margin:8px 0;color:var(--text);line-height:1.6}
+  .seo-text__body ul li::before{content:"";position:absolute;left:10px;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+  .seo-text__body ol{counter-reset:item}
+  .seo-text__body ol li{counter-increment:item}
+  .seo-text__body ol li::before{content:counter(item,decimal-leading-zero);position:absolute;left:0;top:0;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--gold);font-weight:500;padding-top:3px}
+  .seo-text__body blockquote{margin:28px 0;padding:24px 28px;border-left:2px solid var(--gold);background:#fff;border-radius:0 var(--radius-m) var(--radius-m) 0;font-size:18px;line-height:1.5;font-weight:300;color:var(--ink);font-style:italic;letter-spacing:-0.005em;position:relative}
+  .seo-text__body blockquote::before{content:"\"";position:absolute;top:-8px;right:24px;font-family:var(--mono);font-size:64px;color:var(--gold);opacity:.25;line-height:1}
+  .seo-text__body blockquote cite{display:block;margin-top:12px;font-style:normal;font-size:12px;font-family:var(--mono);letter-spacing:.16em;color:var(--text-soft);text-transform:uppercase}
+
+  @media (max-width:900px){
+    .seo-text .wrap{grid-template-columns:1fr;gap:32px}
+    .seo-text__side{position:static}
+    .seo-text__toc{flex-direction:row;flex-wrap:wrap;gap:14px;border-left:0;padding-left:0}
+    .seo-text__toc a{padding:4px 10px;background:#fff;border-radius:999px;border:1px solid rgba(20,22,26,.08)}
+    .seo-text__toc a::before{display:none}
+  }
+
+  /* ============================================================
+     ===== 08  VIDEO BLOCK — premium hub =========================
+     ============================================================ */
+  .video-block{background:#0c0d10;color:#fff;padding:clamp(80px,8vw,128px) 0;position:relative;overflow:hidden}
+  .video-block::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(60% 50% at 90% 0%,rgba(245,202,58,.08),transparent 60%),radial-gradient(50% 40% at 0% 100%,rgba(80,100,140,.10),transparent 60%)}
+  .video-block .wrap{position:relative;z-index:1}
+
+  .video-head{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;margin-bottom:48px}
+  .video-head .sec-eyebrow{color:rgba(220,222,226,.55)}
+  .video-head .sec-eyebrow::before{background:var(--gold)}
+  .video-head h2{font-weight:300;font-size:clamp(36px,4.4vw,60px);line-height:1.02;letter-spacing:-0.025em;margin:0;color:#fff;max-width:18ch}
+  .video-head h2 em{font-style:normal;font-weight:500}
+  .video-head .video-tabs{display:flex;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:6px;border-radius:999px}
+  .video-head .video-tab{font-size:13px;color:rgba(220,222,226,.65);padding:9px 18px;border-radius:999px;cursor:pointer;transition:.2s;white-space:nowrap}
+  .video-head .video-tab:hover{color:#fff}
+  .video-head .video-tab.is-active{background:#fff;color:var(--ink);font-weight:500}
+
+  .video-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+  .vc{position:relative;overflow:hidden;border-radius:var(--radius-l);background:#1a1c20;cursor:pointer;isolation:isolate;border:1px solid rgba(255,255,255,.06);transition:.4s}
+  .vc:hover{transform:translateY(-4px);border-color:rgba(245,202,58,.3)}
+  .vc__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.6,.2,1);z-index:0}
+  .vc:hover .vc__img{transform:scale(1.05)}
+  .vc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.20) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,.75) 100%);z-index:1}
+  .vc__chip{position:absolute;top:18px;left:18px;z-index:3;display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.4);backdrop-filter:blur(10px);padding:6px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.12)}
+  .vc__chip.short{background:#ff0033;border-color:transparent}
+  .vc__dur{position:absolute;top:18px;right:18px;z-index:3;font-family:var(--mono);font-size:11px;color:#fff;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);padding:5px 9px;border-radius:6px;letter-spacing:.04em}
+  .vc__play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;width:66px;height:66px;border-radius:50%;background:rgba(255,255,255,.95);color:var(--ink);display:inline-grid;place-items:center;transition:.3s;box-shadow:0 20px 50px -10px rgba(0,0,0,.5)}
+  .vc:hover .vc__play{background:var(--gold);transform:translate(-50%,-50%) scale(1.08)}
+  .vc__play svg{width:22px;height:22px;margin-left:3px}
+  .vc__meta{position:absolute;left:22px;right:22px;bottom:20px;z-index:3;color:#fff}
+  .vc__title{font-size:17px;font-weight:500;letter-spacing:-0.01em;line-height:1.25;margin:0 0 8px;text-wrap:balance}
+  .vc__sub{font-size:12px;color:rgba(255,255,255,.6);display:flex;gap:10px;align-items:center}
+  .vc__sub .dot{width:3px;height:3px;border-radius:50%;background:currentColor}
+
+  /* big feature horizontal */
+  .vc--feature{grid-column:span 7;aspect-ratio:16/9}
+  .vc--feature .vc__title{font-size:24px;max-width:18ch}
+  .vc--feature .vc__play{width:84px;height:84px}
+  .vc--feature .vc__play svg{width:28px;height:28px}
+
+  /* shorts column (vertical 9:16) */
+  .vc--short{aspect-ratio:9/16;grid-column:span 2.5}
+  .v-shorts{grid-column:span 5;display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .v-shorts .vc{aspect-ratio:9/16}
+  .v-shorts .vc__title{font-size:15px}
+  .v-shorts .vc__play{width:54px;height:54px}
+  .v-shorts .vc__play svg{width:18px;height:18px}
+
+  /* horizontal grid row */
+  .vc--horiz{grid-column:span 4;aspect-ratio:16/10}
+
+  /* channel CTA */
+  .v-channel{grid-column:span 12;margin-top:18px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;padding:32px 40px;border-radius:var(--radius-l);background:linear-gradient(120deg,rgba(255,255,255,.04),rgba(245,202,58,.06));border:1px solid rgba(255,255,255,.08)}
+  .v-channel__info{display:flex;align-items:center;gap:24px}
+  .v-channel__yt{width:56px;height:56px;border-radius:14px;background:#ff0033;display:inline-grid;place-items:center;flex-shrink:0}
+  .v-channel__yt svg{width:30px;height:30px;color:#fff}
+  .v-channel h4{font-size:20px;font-weight:500;letter-spacing:-0.01em;margin:0 0 4px;color:#fff}
+  .v-channel .meta{font-size:13px;color:rgba(220,222,226,.55);display:flex;gap:14px;align-items:center}
+  .v-channel .meta .dot{width:3px;height:3px;border-radius:50%;background:currentColor}
+  .v-channel .btn{background:#ff0033;color:#fff;font-weight:600}
+  .v-channel .btn:hover{background:#ff2050}
+  .v-channel .btn .arrow{background:rgba(255,255,255,.18);color:#fff}
+
+  @media (max-width:1080px){
+    .vc--feature{grid-column:span 12}
+    .v-shorts{grid-column:span 12;grid-template-columns:repeat(4,1fr)}
+    .vc--horiz{grid-column:span 6}
+    .v-channel{grid-template-columns:1fr;padding:24px;text-align:center}
+    .v-channel__info{flex-direction:column;text-align:center}
+    .lead-block .wrap{grid-template-columns:1fr;gap:48px}
+    .video-head{grid-template-columns:1fr;align-items:flex-start}
+  }
+  @media (max-width:640px){
+    .lb__contacts{grid-template-columns:1fr}
+    .v-shorts{grid-template-columns:repeat(2,1fr)}
+    .vc--horiz{grid-column:span 12}
+    .video-head .video-tabs{flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+<div class="page-content">
+
+<!-- ===== HEADER ===== -->
+<header class="topbar" id="topbar" data-screen-label="01 Header">
+  <div class="wrap">
+    <div class="topbar__row">
+      <div class="meta">
+        <a href="tel:+905555555555" class="phone">+90 555 555 55 55</a>
+        <span class="messengers">
+          <a href="https://t.me/plusinvestment" class="tg" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 4.2 2.9 11.4c-1 .4-1 1 0 1.3l4.7 1.5 1.8 5.7c.2.6.4.8.8.8.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.6c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.2-.4-1.7-1.5-1.3zM9.6 14.5l9.5-6c.3-.2.6.1.4.4l-7.8 7-.3 3.2-1.8-4.6z"/></svg></a>
+          <a href="https://wa.me/905555555555" class="wa" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.7-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.2 3 .1.2 2 3 4.7 4.2 1.7.7 2.3.8 3.1.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.2-1.4c1.4.8 3 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.3c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.2.9.9-3.1-.2-.3C3.9 15.1 3.4 13.6 3.4 12 3.4 7.3 7.3 3.4 12 3.4S20.6 7.3 20.6 12 16.7 20.3 12 20.3z"/></svg></a>
+        </span>
+        <span class="sep"></span>
+        <a href="mailto:hello@plusinvestment.com">hello@plusinvestment.com</a>
+      </div>
+      <div class="socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h3l1-4h-4V7.5c0-1.1.4-2 2-2h2V2h-3.5C10.7 2 9 3.8 9 6.5V10H6v4h3v8h4z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5c-.2-1.5-.9-2.5-2.4-2.7C18 4.5 12 4.5 12 4.5s-6 0-8.6.3C1.9 5 1.2 6 1 7.5.7 9 .7 12 .7 12s0 3 .3 4.5c.2 1.5.9 2.5 2.4 2.7 2.6.3 8.6.3 8.6.3s6 0 8.6-.3c1.5-.2 2.2-1.2 2.4-2.7.3-1.5.3-4.5.3-4.5s0-3-.3-4.5zM10 15V9l5 3-5 3z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a>
+      </div>
+      <div class="lang">
+        <button class="is-active">RU</button>
+        <span class="sep"></span>
+        <button>EN</button>
+        <span class="sep"></span>
+        <button>TR</button>
+      </div>
+    </div>
+
+    <div class="topbar__main">
+      <a href="#" class="brand" aria-label="Plus Investment">
+        <span class="brand-fallback"><span class="plus">+</span>Plus Investment</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#">Главная</a>
+        <a href="#" class="has-caret">О компании</a>
+        <a href="#" class="has-caret">Каталог</a>
+        <a href="#">Услуги</a>
+        <a href="#">Блог</a>
+        <a href="#">Контакты</a>
+      </nav>
+      <div class="topbar__cta">
+        <button class="icon-btn" aria-label="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7-4.2-7-9.6A4.4 4.4 0 0 1 9.4 6.5c1.3 0 2.5.7 2.6 1.7.1-1 1.3-1.7 2.6-1.7A4.4 4.4 0 0 1 19 10.9c0 5.4-7 9.6-7 9.6z"/></svg>
+        </button>
+        <a href="#" class="btn btn--gold" data-open-modal="lead">Заказать звонок <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" data-screen-label="02 Hero">
+  <div class="hero__bg" aria-hidden="true">
+    <img src="assets/hero.jpg" alt="Alanya · Türkiye">
+  </div>
+  <div class="hero__veil" aria-hidden="true"></div>
+
+  <div class="wrap hero__inner">
+    <div class="hero__copy">
+      <span class="hero__eyebrow">
+        <span class="pill">Plus</span>
+        Premium real estate · Türkiye
+      </span>
+
+      <h1 class="hero__title">
+        Подберём <em>недвижимость</em><br>
+        в Турции <span class="accent">под вашу цель.</span>
+      </h1>
+
+      <p class="hero__sub">
+        Инвестиции, переезд или отдых — разные задачи требуют разных решений.
+      </p>
+
+      <div class="hero__cta-row">
+        <button class="btn btn--gold btn--lg" data-open-modal="lead">
+          Подобрать недвижимость <span class="arrow">→</span>
+        </button>
+        <a href="#search" class="btn btn--ghost">Перейти к каталогу <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div class="hero__bottom">
+      <div class="hero__goals">
+        <span class="goal"><span class="num">01</span> Инвестиции</span>
+        <span class="goal"><span class="num">02</span> Переезд</span>
+        <span class="goal"><span class="num">03</span> Отдых</span>
+      </div>
+      <div class="hero__scroll">
+        <span>Scroll</span>
+        <span class="line"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Marquee ticker ===== -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <span>Алания</span><span>Анталия</span><span>Бодрум</span><span>Çeşme</span><span>Kalkan</span><span>Стамбул</span><span>Side</span><span>Belek</span>
+    <span>Алания</span><span>Анталия</span><span>Бодрум</span><span>Çeşme</span><span>Kalkan</span><span>Стамбул</span><span>Side</span><span>Belek</span>
+  </div>
+</div>
+
+<!-- ===== SEARCH ===== -->
+<section class="section section--tight" id="search" data-screen-label="03 Search">
+  <div class="wrap" data-reveal>
+    <div class="search-head">
+      <div>
+        <div class="sec-eyebrow">Поиск недвижимости</div>
+        <h2 class="sec-title">Найдите объект <em>по точным параметрам.</em></h2>
+      </div>
+      <a href="#" class="sec-link">Показать объекты →</a>
+    </div>
+
+    <div class="search-card">
+      <!-- основные поля -->
+      <div class="search-row search-row--primary">
+        <div class="search-field search-field--wide">
+          <label>Тип сделки</label>
+          <select>
+            <option>Купить</option>
+            <option>Арендовать</option>
+            <option>Долгосрочная аренда</option>
+          </select>
+        </div>
+        <div class="search-field search-field--wide">
+          <label>Город</label>
+          <select>
+            <option>Алания</option>
+            <option>Анталия</option>
+            <option>Бодрум</option>
+            <option>Стамбул</option>
+            <option>Side</option>
+            <option>Belek</option>
+            <option>Kalkan</option>
+          </select>
+        </div>
+        <div class="search-field search-field--wide">
+          <label>Район</label>
+          <select>
+            <option>Все районы</option>
+            <option>Махмутлар</option>
+            <option>Каргыджак</option>
+            <option>Оба</option>
+            <option>Тосмур</option>
+          </select>
+        </div>
+        <div class="search-field search-field--wide">
+          <label>Цена, €</label>
+          <div class="range-pair">
+            <input type="text" placeholder="от" inputmode="numeric">
+            <input type="text" placeholder="до" inputmode="numeric">
+          </div>
+        </div>
+        <div class="search-field search-field--wide">
+          <label>Вид недвижимости</label>
+          <select>
+            <option>Любой</option>
+            <option>Квартира</option>
+            <option>Вилла</option>
+            <option>Земля</option>
+          </select>
+        </div>
+        <div class="search-field search-field--wide">
+          <label>Площадь, м²</label>
+          <div class="range-pair">
+            <input type="text" placeholder="от" inputmode="numeric">
+            <input type="text" placeholder="до" inputmode="numeric">
+          </div>
+        </div>
+        <div class="search-field search-field--wide">
+          <label>Планировка</label>
+          <select>
+            <option>Любая</option>
+            <option>1+1</option>
+            <option>2+1</option>
+            <option>3+1</option>
+            <option>4+1</option>
+          </select>
+        </div>
+        <div class="search-submit-wrap">
+          <button class="search-submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            Найти
+          </button>
+        </div>
+      </div>
+
+      <!-- расширенный поиск (свернут) -->
+      <div class="search-extended" id="searchExtended">
+        <div class="search-field">
+          <label>Тип</label>
+          <select>
+            <option>Любой</option>
+            <option>Новостройка</option>
+            <option>Вторичка</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label>Срок сдачи</label>
+          <select>
+            <option>Любой</option>
+            <option>Сдан</option>
+            <option>2026</option>
+            <option>2027</option>
+            <option>2028</option>
+            <option>2029</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label>Этажность</label>
+          <div class="range-pair">
+            <input type="text" placeholder="от" inputmode="numeric">
+            <input type="text" placeholder="до" inputmode="numeric">
+          </div>
+        </div>
+        <div class="search-field">
+          <label>До моря, м</label>
+          <div class="range-pair">
+            <input type="text" placeholder="от" inputmode="numeric">
+            <input type="text" placeholder="до" inputmode="numeric">
+          </div>
+        </div>
+        <div class="search-field">
+          <label>Мебель</label>
+          <select>
+            <option>Любая</option>
+            <option>С мебелью</option>
+            <option>Без мебели</option>
+            <option>Частично</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label>Вид</label>
+          <select>
+            <option>Любой</option>
+            <option>На море</option>
+            <option>На горы</option>
+            <option>Панорамный</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="search-extra">
+        <button type="button" class="search-advanced" id="searchAdvancedToggle">
+          <span class="plus-icon">+</span>
+          <span class="search-advanced__label">Расширенный поиск</span>
+        </button>
+        <div class="search-id">
+          Поиск по ID
+          <input type="text" placeholder="PI-0000">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== POPULAR ===== -->
+<section class="section" id="popular" data-screen-label="04 Popular Properties">
+  <div class="wrap" data-reveal>
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow">Популярные объекты</div>
+        <h2 class="sec-title">Популярные <em>объекты.</em></h2>
+      </div>
+      <div class="sec-controls">
+        <a href="#" class="sec-link">Все объекты →</a>
+        <button class="arrow-btn" aria-label="Назад"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="arrow-btn" aria-label="Вперёд"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+
+    <div class="props">
+      <article class="prop">
+        <div class="prop__media">
+          <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=85" alt="">
+          <div class="prop__badges">
+            <span class="badge badge--gold"><span class="dot"></span>Горячее предложение</span>
+            <button class="prop__fav" aria-label="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7-4.2-7-9.6A4.4 4.4 0 0 1 9.4 6.5c1.3 0 2.5.7 2.6 1.7.1-1 1.3-1.7 2.6-1.7A4.4 4.4 0 0 1 19 10.9c0 5.4-7 9.6-7 9.6z"/></svg></button>
+          </div>
+          <div class="prop__meta-bottom">
+            <span class="prop__loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s-7-7-7-12a7 7 0 1 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="10" r="2.5"/></svg> Kalkan · Antalya</span>
+            <span class="prop__id">PI-0427</span>
+          </div>
+        </div>
+        <div class="prop__body">
+          <h3 class="prop__title">Villa Lumen — резиденция с видом на море</h3>
+          <div class="prop__feats">
+            <span class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M2 16h20v4H2z"/></svg> <b>4+1</b></span>
+            <span class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h20v4a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg> <b>3</b> с/у</span>
+            <span class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21V8l9-5 9 5v13"/></svg> <b>320</b> м²</span>
+          </div>
+          <div class="prop__footer">
+            <div class="price"><span class="cur">от</span> <span class="amt">€ 1 240 000</span></div>
+            <a href="#" class="prop__cta">Подробнее <span class="arrow">→</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="prop">
+        <div class="prop__media">
+          <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200&q=85" alt="">
+          <div class="prop__badges">
+            <span class="badge badge--dark"><span class="dot"></span>Новостройка</span>
+            <button class="prop__fav" aria-label="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7-4.2-7-9.6A4.4 4.4 0 0 1 9.4 6.5c1.3 0 2.5.7 2.6 1.7.1-1 1.3-1.7 2.6-1.7A4.4 4.4 0 0 1 19 10.9c0 5.4-7 9.6-7 9.6z"/></svg></button>
+          </div>
+          <div class="prop__meta-bottom">
+            <span class="prop__loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s-7-7-7-12a7 7 0 1 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="10" r="2.5"/></svg> Mahmutlar · Alanya</span>
+            <span class="prop__id">PI-0314</span>
+          </div>
+        </div>
+        <div class="prop__body">
+          <h3 class="prop__title">Skyline Residences</h3>
+          <div class="prop__feats">
+            <span class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M2 16h20v4H2z"/></svg> <b>1+1</b></span>
+            <span class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h20v4a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg> <b>1</b> с/у</span>
+            <span class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21V8l9-5 9 5v13"/></svg> <b>62</b> м²</span>
+          </div>
+          <div class="prop__footer">
+            <div class="price"><span class="cur">от</span> <span class="amt">€ 168 000</span></div>
+            <a href="#" class="prop__cta">Подробнее <span class="arrow">→</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="prop">
+        <div class="prop__media">
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=85" alt="">
+          <div class="prop__badges">
+            <span class="badge"><span class="dot"></span>Готов</span>
+            <button class="prop__fav" aria-label="В избранное"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7-4.2-7-9.6A4.4 4.4 0 0 1 9.4 6.5c1.3 0 2.5.7 2.6 1.7.1-1 1.3-1.7 2.6-1.7A4.4 4.4 0 0 1 19 10.9c0 5.4-7 9.6-7 9.6z"/></svg></button>
+          </div>
+          <div class="prop__meta-bottom">
+            <span class="prop__loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s-7-7-7-12a7 7 0 1 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="10" r="2.5"/></svg> Yalıkavak · Bodrum</span>
+            <span class="prop__id">PI-0298</span>
+          </div>
+        </div>
+        <div class="prop__body">
+          <h3 class="prop__title">Marina House</h3>
+          <div class="prop__feats">
+            <span class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M2 16h20v4H2z"/></svg> <b>3+1</b></span>
+            <span class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h20v4a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg> <b>2</b> с/у</span>
+            <span class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21V8l9-5 9 5v13"/></svg> <b>180</b> м²</span>
+          </div>
+          <div class="prop__footer">
+            <div class="price"><span class="cur">€</span> <span class="amt">645 000</span></div>
+            <a href="#" class="prop__cta">Подробнее <span class="arrow">→</span></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04b SHOWCASE — developer portfolio ===== -->
+<section class="showcase" id="showcase" data-screen-label="04b Showcase">
+  <div class="showcase__runway" id="scRunway">
+    <div class="showcase__pin">
+      <div class="showcase__head">
+        <div>
+          <div class="sec-eyebrow">Реализованные комплексы</div>
+          <h2 class="sec-title">Архитектура <em>и масштаб</em> наших объектов.</h2>
+        </div>
+        <div class="showcase__progress">
+          <span class="count"><b id="scCur">01</b> <span style="opacity:.4">/ 03</span></span>
+          <span class="bar" id="scBar"></span>
+        </div>
+      </div>
+
+      <div class="showcase__viewport">
+        <div class="showcase__track" id="scTrack">
+
+          <article class="sc-card">
+            <div class="sc-card__main">
+              <img class="sc-parallax" data-px="0.06" src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1800&q=85" alt="">
+              <div class="sc-card__badges">
+                <span class="badge badge--gold"><span class="dot"></span>Turkish Citizenship</span>
+                <span class="badge">Residence Permit Eligible</span>
+                <span class="badge badge--dark">New Project</span>
+              </div>
+              <div class="sc-card__title-block">
+                <span class="sc-card__num">01 · Резиденция</span>
+                <h3 class="sc-card__title">Lumen <em>Coast Residences</em></h3>
+                <span class="sc-card__loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s-7-7-7-12a7 7 0 1 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="10" r="2.5"/></svg> Kalkan · Antalya</span>
+              </div>
+            </div>
+            <div class="sc-card__side">
+              <div class="sc-card__side-media">
+                <img class="sc-parallax" data-px="0.1" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=85" alt="">
+              </div>
+              <div class="sc-card__info">
+                <div class="sc-card__price">
+                  <span class="l">от</span>
+                  <span class="v">€ 480 000</span>
+                </div>
+                <div class="sc-card__specs">
+                  <div class="sc-spec"><span class="l">Планировки</span><span class="v">1+1, 2+1, 4+1 duplex</span></div>
+                  <div class="sc-spec"><span class="l">Площадь</span><span class="v">68 — 320 м²</span></div>
+                  <div class="sc-spec"><span class="l">Сдача</span><span class="v">Q4 2027</span></div>
+                </div>
+                <a href="#" class="sc-card__cta">Подробнее о комплексе <span class="arrow">→</span></a>
+              </div>
+            </div>
+          </article>
+
+          <article class="sc-card">
+            <div class="sc-card__main">
+              <img class="sc-parallax" data-px="0.06" src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1800&q=85" alt="">
+              <div class="sc-card__badges">
+                <span class="badge">Residence Permit Eligible</span>
+                <span class="badge badge--gold"><span class="dot"></span>Turkish Citizenship</span>
+              </div>
+              <div class="sc-card__title-block">
+                <span class="sc-card__num">02 · Жилой комплекс</span>
+                <h3 class="sc-card__title">Skyline <em>Mahmutlar</em></h3>
+                <span class="sc-card__loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s-7-7-7-12a7 7 0 1 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="10" r="2.5"/></svg> Mahmutlar · Alanya</span>
+              </div>
+            </div>
+            <div class="sc-card__side">
+              <div class="sc-card__side-media">
+                <img class="sc-parallax" data-px="0.1" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=900&q=85" alt="">
+              </div>
+              <div class="sc-card__info">
+                <div class="sc-card__price">
+                  <span class="l">от</span>
+                  <span class="v">€ 168 000</span>
+                </div>
+                <div class="sc-card__specs">
+                  <div class="sc-spec"><span class="l">Планировки</span><span class="v">1+1, 2+1, 3+1</span></div>
+                  <div class="sc-spec"><span class="l">Площадь</span><span class="v">52 — 145 м²</span></div>
+                  <div class="sc-spec"><span class="l">Год</span><span class="v">2025 · сдан</span></div>
+                </div>
+                <a href="#" class="sc-card__cta">Подробнее о комплексе <span class="arrow">→</span></a>
+              </div>
+            </div>
+          </article>
+
+          <article class="sc-card">
+            <div class="sc-card__main">
+              <img class="sc-parallax" data-px="0.06" src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1800&q=85" alt="">
+              <div class="sc-card__badges">
+                <span class="badge badge--dark">New Project</span>
+                <span class="badge">Residence Permit Eligible</span>
+              </div>
+              <div class="sc-card__title-block">
+                <span class="sc-card__num">03 · Marina-резиденция</span>
+                <h3 class="sc-card__title">Marina <em>Yalıkavak</em></h3>
+                <span class="sc-card__loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s-7-7-7-12a7 7 0 1 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="10" r="2.5"/></svg> Yalıkavak · Bodrum</span>
+              </div>
+            </div>
+            <div class="sc-card__side">
+              <div class="sc-card__side-media">
+                <img class="sc-parallax" data-px="0.1" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=85" alt="">
+              </div>
+              <div class="sc-card__info">
+                <div class="sc-card__price">
+                  <span class="l">от</span>
+                  <span class="v">€ 645 000</span>
+                </div>
+                <div class="sc-card__specs">
+                  <div class="sc-spec"><span class="l">Планировки</span><span class="v">2+1, 3+1, villa 5+1</span></div>
+                  <div class="sc-spec"><span class="l">Площадь</span><span class="v">95 — 410 м²</span></div>
+                  <div class="sc-spec"><span class="l">Сдача</span><span class="v">Q2 2028</span></div>
+                </div>
+                <a href="#" class="sc-card__cta">Подробнее о комплексе <span class="arrow">→</span></a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SEO CATEGORIES ===== -->
+<section class="section seo" id="seo" data-screen-label="05 SEO Categories">
+  <div class="wrap" data-reveal>
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">С чего <em>начать поиск.</em></h2>
+      </div>
+    </div>
+
+    <div class="seo__grid">
+      <a class="seo-card seo-1" href="#" style="--img:url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1600&q=85')">
+        <span class="seo__count">512 объектов</span>
+        <h3 class="seo__title">Квартиры в Алании</h3>
+        <p class="seo__sub">от € 95 000 <span class="arrow-mini">→</span></p>
+      </a>
+      <a class="seo-card seo-2" href="#" style="--img:url('https://images.unsplash.com/photo-1613977257592-4a9a32f9141d?w=1200&q=85')">
+        <span class="seo__count">412</span>
+        <h3 class="seo__title">Виллы у моря</h3>
+        <p class="seo__sub">от € 480 000 <span class="arrow-mini">→</span></p>
+      </a>
+      <a class="seo-card seo-3" href="#" style="--img:url('https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1200&q=85')">
+        <span class="seo__count">147</span>
+        <h3 class="seo__title">Новостройки</h3>
+        <p class="seo__sub">сдача 2026–2027 <span class="arrow-mini">→</span></p>
+      </a>
+      <a class="seo-card seo-4" href="#" style="--img:url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&q=85')">
+        <span class="seo__count">271</span>
+        <h3 class="seo__title">Инвестиционная недвижимость</h3>
+        <p class="seo__sub">средняя доходность 7,8% <span class="arrow-mini">→</span></p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06  LEAD FORM (Получить подборку) ===== -->
+<section class="lead-block" id="lead" data-screen-label="06 Lead form">
+  <div class="wrap" data-reveal>
+    <div class="lb__copy">
+      <div class="sec-eyebrow">Получите подборку</div>
+      <h2>Подберём <em>3–5 объектов</em> <span class="accent">под вашу цель.</span></h2>
+      <p class="lb__sub">Расскажите коротко о задаче — менеджер свяжется в течение 15 минут, уточнит детали и пришлёт персональную подборку с расчётом полной стоимости.</p>
+
+      <div class="lb__contacts">
+        <a href="tel:+905555555555" class="lb__contact">
+          <div class="l">Телефон / WhatsApp</div>
+          <div class="v">+90 555 555 55 55</div>
+        </a>
+        <a href="mailto:hello@plusinvestment.com" class="lb__contact">
+          <div class="l">Email</div>
+          <div class="v">hello@plusinvestment.com</div>
+        </a>
+      </div>
+
+      <div class="lb__divider"></div>
+      <div class="lb__assurance">
+        <div class="item"><span class="ic">✓</span><span>Бесплатная консультация без обязательств.</span></div>
+        <div class="item"><span class="ic">✓</span><span>Подборка адаптируется под цель: инвестиции, переезд или отдых.</span></div>
+        <div class="item"><span class="ic">✓</span><span>Ваши данные защищены — не передаём третьим лицам.</span></div>
+      </div>
+    </div>
+
+    <div class="lb__form-wrap">
+      <form class="lb__form" id="leadFullForm" novalidate>
+        <span class="lb__form-tag"><span class="pulse"></span>Online · отвечаем 24/7</span>
+        <h3>Получить подборку</h3>
+        <p class="lb__form-sub">Заполните форму — пришлём подборку в WhatsApp или на email.</p>
+
+        <div class="lb__field" data-required>
+          <input type="text" id="lf-name" placeholder=" " autocomplete="name">
+          <label for="lf-name">Ваше имя</label>
+          <span class="err">Укажите, как к вам обращаться</span>
+        </div>
+        <div class="lb__field" data-required data-validate="phone">
+          <input type="tel" id="lf-phone" placeholder=" " autocomplete="tel">
+          <label for="lf-phone">Телефон</label>
+          <span class="err">Введите корректный номер телефона</span>
+        </div>
+        <div class="lb__field" data-required data-validate="email">
+          <input type="email" id="lf-email" placeholder=" " autocomplete="email">
+          <label for="lf-email">Email</label>
+          <span class="err">Введите корректный email</span>
+        </div>
+        <div class="lb__field">
+          <textarea id="lf-msg" rows="2" placeholder=" "></textarea>
+          <label for="lf-msg">Комментарий <span style="opacity:.5">— необязательно</span></label>
+        </div>
+
+        <button class="lb__submit" type="submit">Получить подборку <span class="arrow">→</span></button>
+        <p class="lb__legal">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой конфиденциальности</a>.</p>
+
+        <div class="lb__success">
+          <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+          <h4>Заявка отправлена</h4>
+          <p>Спасибо! Менеджер свяжется в течение 15 минут и пришлёт подборку.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 07  WHY US — horizontal scroll ===== -->
+<section class="why" id="why" data-screen-label="07 Why us">
+  <div class="why__runway" id="whyRunway">
+    <div class="why__pin">
+      <div class="why__head">
+        <div class="lead">
+          <div class="sec-eyebrow">Почему мы</div>
+          <h2 class="sec-title">6 причин работать<br><em>с Plus Investment.</em></h2>
+        </div>
+        <div class="why__progress">
+          <span class="count"><b id="whyCur">01</b> <span style="opacity:.4">/ 06</span></span>
+          <span class="bar" id="whyBar"></span>
+          <span class="hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            Скролл
+          </span>
+        </div>
+      </div>
+
+      <div class="why__wave" aria-hidden="true">
+        <svg viewBox="0 0 1600 240" preserveAspectRatio="none">
+          <path class="wave-bg" d="M-50,120 C150,40 280,200 460,120 S780,40 940,120 S1240,200 1420,120 S1700,40 1800,120"/>
+          <path id="waveFg" class="wave-fg" d="M-50,120 C150,40 280,200 460,120 S780,40 940,120 S1240,200 1420,120 S1700,40 1800,120"/>
+          <path id="waveGlow" class="wave-glow" d="M-50,120 C150,40 280,200 460,120 S780,40 940,120 S1240,200 1420,120 S1700,40 1800,120"/>
+        </svg>
+      </div>
+
+      <div class="why__viewport">
+        <div class="why__track" id="whyTrack">
+          <article class="why-card">
+            <div class="why-card__num">01 · Цель</div>
+            <div class="why-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></div>
+            <h3>Подбор под цель</h3>
+            <p>Анализируем вашу задачу и подбираем объекты, которые ей соответствуют — для инвестиций, переезда или отдыха.</p>
+            <span class="why-card__corner">PI · 01</span>
+          </article>
+
+          <article class="why-card">
+            <div class="why-card__num">02 · Экспертиза</div>
+            <div class="why-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-7-7-12a7 7 0 1 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+            <h3>Локальная экспертиза</h3>
+            <p>Команда живёт в Турции и знает рынок изнутри. Расскажем о районах, инфраструктуре и перспективах роста.</p>
+            <span class="why-card__corner">PI · 02</span>
+          </article>
+
+          <article class="why-card">
+            <div class="why-card__num">03 · Качество</div>
+            <div class="why-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l9 4v6c0 5-4 8-9 9-5-1-9-4-9-9V7l9-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <h3>Только проверенные объекты</h3>
+            <p>Работаем с надёжными застройщиками и собственниками. Каждый объект проходит юридическую проверку.</p>
+            <span class="why-card__corner">PI · 03</span>
+          </article>
+
+          <article class="why-card">
+            <div class="why-card__num">04 · Сопровождение</div>
+            <div class="why-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h12a3 3 0 0 1 0 6h-2"/><path d="M4 6v14h16V12"/><path d="M8 14h6M8 18h8"/></svg></div>
+            <h3>Полное юридическое сопровождение</h3>
+            <p>Помогаем оформить документы, открыть счёт, получить налоговый номер и зарегистрировать сделку.</p>
+            <span class="why-card__corner">PI · 04</span>
+          </article>
+
+          <article class="why-card">
+            <div class="why-card__num">05 · ВНЖ</div>
+            <div class="why-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M5 17c1-2 3-3 4-3s3 1 4 3"/><path d="M14 9h5M14 12h4"/></svg></div>
+            <h3>ВНЖ и гражданство</h3>
+            <p>Консультируем по программам резидентства и гражданства через покупку недвижимости в Турции.</p>
+            <span class="why-card__corner">PI · 05</span>
+          </article>
+
+          <article class="why-card">
+            <div class="why-card__num">06 · Прозрачность</div>
+            <div class="why-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <h3>Прозрачность сделки</h3>
+            <p>Все этапы документируем и согласовываем с вами. Никаких скрытых комиссий и неожиданных платежей.</p>
+            <span class="why-card__corner">PI · 06</span>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08  VIDEO BLOCK ===== -->
+<section class="video-block" id="video" data-screen-label="08 Video">
+  <div class="wrap" data-reveal>
+    <div class="video-head">
+      <div>
+        <div class="sec-eyebrow">Видео-обзоры</div>
+        <h2>Посмотрите <em>как это выглядит</em> вживую.</h2>
+      </div>
+      <div class="video-tabs" role="tablist">
+        <button class="video-tab is-active" data-tab="all">Все</button>
+        <button class="video-tab" data-tab="objects">Объекты</button>
+        <button class="video-tab" data-tab="districts">Районы</button>
+        <button class="video-tab" data-tab="cases">Кейсы</button>
+      </div>
+    </div>
+
+    <div class="video-grid">
+      <a class="vc vc--feature" href="#" data-cat="objects">
+        <img class="vc__img" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&q=85" alt="">
+        <span class="vc__chip"><span style="width:6px;height:6px;border-radius:50%;background:#ff0033"></span>Объект</span>
+        <span class="vc__dur">8:42</span>
+        <span class="vc__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg></span>
+        <div class="vc__meta">
+          <h3 class="vc__title">Villa Lumen · Kalkan — резиденция с панорамой Средиземного моря</h3>
+          <div class="vc__sub"><span>PI-0427</span><span class="dot"></span><span>4K · drone tour</span><span class="dot"></span><span>124K просмотров</span></div>
+        </div>
+      </a>
+
+      <div class="v-shorts">
+        <a class="vc" href="#" data-cat="districts">
+          <img class="vc__img" src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=900&q=85" alt="">
+          <span class="vc__chip short">Shorts</span>
+          <span class="vc__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg></span>
+          <div class="vc__meta">
+            <h3 class="vc__title">Махмутлар за 60 секунд</h3>
+            <div class="vc__sub"><span>0:58</span><span class="dot"></span><span>89K</span></div>
+          </div>
+        </a>
+        <a class="vc" href="#" data-cat="cases">
+          <img class="vc__img" src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=900&q=85" alt="">
+          <span class="vc__chip short">Shorts</span>
+          <span class="vc__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg></span>
+          <div class="vc__meta">
+            <h3 class="vc__title">Сделка за 14 дней — кейс инвестора</h3>
+            <div class="vc__sub"><span>1:12</span><span class="dot"></span><span>42K</span></div>
+          </div>
+        </a>
+      </div>
+
+      <a class="vc vc--horiz" href="#" data-cat="districts">
+        <img class="vc__img" src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1200&q=85" alt="">
+        <span class="vc__chip">Район</span>
+        <span class="vc__dur">12:08</span>
+        <span class="vc__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg></span>
+        <div class="vc__meta">
+          <h3 class="vc__title">Алания: где жить и куда инвестировать в 2026</h3>
+          <div class="vc__sub"><span>Гид по районам</span><span class="dot"></span><span>67K просмотров</span></div>
+        </div>
+      </a>
+
+      <a class="vc vc--horiz" href="#" data-cat="objects">
+        <img class="vc__img" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=85" alt="">
+        <span class="vc__chip">Объект</span>
+        <span class="vc__dur">6:24</span>
+        <span class="vc__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg></span>
+        <div class="vc__meta">
+          <h3 class="vc__title">Marina House · Bodrum</h3>
+          <div class="vc__sub"><span>PI-0298</span><span class="dot"></span><span>HD tour</span></div>
+        </div>
+      </a>
+
+      <a class="vc vc--horiz" href="#" data-cat="cases">
+        <img class="vc__img" src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=85" alt="">
+        <span class="vc__chip">Кейс</span>
+        <span class="vc__dur">9:50</span>
+        <span class="vc__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg></span>
+        <div class="vc__meta">
+          <h3 class="vc__title">Покупка квартиры из Москвы — без визита</h3>
+          <div class="vc__sub"><span>История клиента</span><span class="dot"></span><span>38K</span></div>
+        </div>
+      </a>
+
+      <div class="v-channel">
+        <div class="v-channel__info">
+          <span class="v-channel__yt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5c-.2-1.5-.9-2.5-2.4-2.7C18 4.5 12 4.5 12 4.5s-6 0-8.6.3C1.9 5 1.2 6 1 7.5.7 9 .7 12 .7 12s0 3 .3 4.5c.2 1.5.9 2.5 2.4 2.7 2.6.3 8.6.3 8.6.3s6 0 8.6-.3c1.5-.2 2.2-1.2 2.4-2.7.3-1.5.3-4.5.3-4.5s0-3-.3-4.5zM10 15V9l5 3-5 3z"/></svg></span>
+          <div>
+            <h4>Plus Investment · YouTube</h4>
+            <div class="meta"><span>24K подписчиков</span><span class="dot"></span><span>2 новых видео в неделю</span><span class="dot"></span><span>Обзоры · Районы · Кейсы</span></div>
+          </div>
+        </div>
+        <a href="#" class="btn">Подписаться на канал <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 09  TESTIMONIALS ===== -->
+<section class="tm" id="testimonials" data-screen-label="09 Testimonials">
+  <div class="wrap" data-reveal>
+    <div class="tm__head">
+      <div>
+        <div class="sec-eyebrow">Отзывы</div>
+        <h2>Что говорят <em>наши клиенты.</em></h2>
+      </div>
+      <div class="tm__controls">
+        <button class="arrow-btn" id="tmPrev" aria-label="Назад"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="arrow-btn" id="tmNext" aria-label="Вперёд"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+
+    <div class="tm__viewport">
+      <div class="tm__track" id="tmTrack">
+
+        <article class="tm-card">
+          <span class="tm__quote">”</span>
+          <div class="tm__head-row">
+            <div class="tm__avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=85" alt=""></div>
+            <div class="tm__who">
+              <span class="tm__name">Анна Соколова</span>
+              <span class="tm__loc">Москва · Россия<span class="dot"></span>март 2026</span>
+            </div>
+          </div>
+          <p class="tm__text">Покупали квартиру в Махмутларе для отдыха. Команда подобрала три варианта точно под наш бюджет, сопровождала на просмотрах и помогла с оформлением полностью удалённо. Уже четвёртый месяц приезжаем — всё идеально.</p>
+        </article>
+
+        <article class="tm-card tm-card--video">
+          <div class="tm-video">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=900&q=85" alt="">
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="tm-play" aria-label="Смотреть видео"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg></a>
+          </div>
+          <div class="tm__head-row">
+            <div class="tm__avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=85" alt=""></div>
+            <div class="tm__who">
+              <span class="tm__name">Дмитрий Орлов</span>
+              <span class="tm__loc">Киев · Украина<span class="dot"></span>февраль 2026</span>
+            </div>
+          </div>
+          <p class="tm__text">Снял видео-отзыв через месяц после сделки — расскажу, как покупал виллу в Калкане для сдачи в аренду и какую доходность получаю сейчас.</p>
+          <button class="tm__more">Смотреть видео-отзыв</button>
+        </article>
+
+        <article class="tm-card">
+          <span class="tm__quote">”</span>
+          <div class="tm__head-row">
+            <div class="tm__avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=85" alt=""></div>
+            <div class="tm__who">
+              <span class="tm__name">Елена Морозова</span>
+              <span class="tm__loc">Алматы · Казахстан<span class="dot"></span>январь 2026</span>
+            </div>
+          </div>
+          <p class="tm__text">Переезжали с семьёй в Анталию. Plus Investment подобрали район под школу для детей, помогли с ВНЖ, открытием счёта и налоговым номером. Сделали всё за 6 недель. Отдельная благодарность Айше — она была на связи 24/7, отвечала даже ночью, разбиралась с любыми вопросами. Сейчас живём здесь уже полгода — всё, что нам обещали, оказалось правдой: и инфраструктура, и соседи, и климат. Рекомендуем всем, кто только думает о переезде в Турцию.</p>
+          <button class="tm__more">Читать полностью</button>
+        </article>
+
+        <article class="tm-card">
+          <span class="tm__quote">”</span>
+          <div class="tm__head-row">
+            <div class="tm__avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=85" alt=""></div>
+            <div class="tm__who">
+              <span class="tm__name">Михаил Громов</span>
+              <span class="tm__loc">Лондон · Великобритания<span class="dot"></span>декабрь 2025</span>
+            </div>
+          </div>
+          <p class="tm__text">Инвестировал в три апартамента в Алании. Юридическое сопровождение на высшем уровне — ни одного вопроса не осталось без ответа.</p>
+        </article>
+
+        <article class="tm-card tm-card--video">
+          <div class="tm-video">
+            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=900&q=85" alt="">
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="tm-play" aria-label="Смотреть видео"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg></a>
+          </div>
+          <div class="tm__head-row">
+            <div class="tm__avatar"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=85" alt=""></div>
+            <div class="tm__who">
+              <span class="tm__name">Ольга Романенко</span>
+              <span class="tm__loc">Берлин · Германия<span class="dot"></span>ноябрь 2025</span>
+            </div>
+          </div>
+          <p class="tm__text">Год назад купили квартиру в Бодруме. Делимся опытом — что было до, во время и после сделки.</p>
+        </article>
+
+        <article class="tm-card">
+          <span class="tm__quote">”</span>
+          <div class="tm__head-row">
+            <div class="tm__avatar"><img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&q=85" alt=""></div>
+            <div class="tm__who">
+              <span class="tm__name">Сергей Левин</span>
+              <span class="tm__loc">Дубай · ОАЭ<span class="dot"></span>октябрь 2025</span>
+            </div>
+          </div>
+          <p class="tm__text">Заочно купил квартиру в Стамбуле для получения гражданства. Команда взяла на себя всё — от просмотра до подачи документов. Получил паспорт за 8 месяцев, как и обещали в начале. Особенно ценно, что не было ни одного скрытого платежа: всё, что прозвучало на старте, осталось финальной цифрой. После сделки сопровождение не закончилось — помогли с управляющей компанией, страховкой и сдачей в аренду через первый месяц.</p>
+          <button class="tm__more">Читать полностью</button>
+        </article>
+
+      </div>
+    </div>
+
+    <div class="tm__nav">
+      <div class="tm__dots" id="tmDots"></div>
+      <a href="#" class="sec-link">Все отзывы →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10  BLOG / Articles ===== -->
+<section class="blog" id="blog" data-screen-label="10 Blog">
+  <div class="wrap" data-reveal>
+    <div class="blog__head">
+      <div>
+        <div class="sec-eyebrow">Блог</div>
+        <h2>Полезные статьи <em>о недвижимости.</em></h2>
+      </div>
+    </div>
+
+    <div class="blog__grid">
+      <a href="#" class="article-card">
+        <div class="article-card__media">
+          <span class="article-card__tag">Гид</span>
+          <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=900&q=85" alt="">
+          <span class="article-card__hover-cta">Читать статью <span class="a-arrow">↗</span></span>
+        </div>
+        <div class="article-card__body">
+          <div class="article-card__meta">
+            <span>05 мая 2026</span><span class="dot"></span><span>7 мин</span>
+          </div>
+          <h3 class="article-card__title">Как выбрать район в Алании: гид по 7 локациям</h3>
+          <p class="article-card__excerpt">Разбираем плюсы, минусы и среднюю цену квадратного метра в популярных районах — от Махмутлара до Каргыджака.</p>
+        </div>
+      </a>
+
+      <a href="#" class="article-card">
+        <div class="article-card__media">
+          <span class="article-card__tag">Инвестиции</span>
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900&q=85" alt="">
+          <span class="article-card__hover-cta">Читать статью <span class="a-arrow">↗</span></span>
+        </div>
+        <div class="article-card__body">
+          <div class="article-card__meta">
+            <span>28 апреля 2026</span><span class="dot"></span><span>5 мин</span>
+          </div>
+          <h3 class="article-card__title">Доходность аренды в Турции: реальные цифры 2026</h3>
+          <p class="article-card__excerpt">Сколько приносит квартира в Анталии, Бодруме и Стамбуле — с примерами расчётов и налоговой составляющей.</p>
+        </div>
+      </a>
+
+      <a href="#" class="article-card">
+        <div class="article-card__media">
+          <span class="article-card__tag">Юр. аспекты</span>
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&q=85" alt="">
+          <span class="article-card__hover-cta">Читать статью <span class="a-arrow">↗</span></span>
+        </div>
+        <div class="article-card__body">
+          <div class="article-card__meta">
+            <span>14 апреля 2026</span><span class="dot"></span><span>9 мин</span>
+          </div>
+          <h3 class="article-card__title">ВНЖ через покупку недвижимости: шаг за шагом</h3>
+          <p class="article-card__excerpt">Условия, сроки, документы и подводные камни — пошаговая инструкция от получения тапу до резидентской карты.</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="blog__footer">
+      <a href="#" class="blog__all">Все статьи <span class="a-arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11  FAQ + Ask form ===== -->
+<section class="faq" id="faq" data-screen-label="11 FAQ">
+  <div class="wrap" data-reveal>
+    <div class="faq__copy">
+      <div class="sec-eyebrow">Вопросы и ответы</div>
+      <h2>Часто задаваемые <em>вопросы.</em></h2>
+      <p>Собрали самое важное о покупке недвижимости в Турции — от первого звонка до получения тапу и ВНЖ.</p>
+      <span class="faq__hint"><span class="dot"></span>Обновлено 13 мая 2026</span>
+    </div>
+
+    <div class="faq__list" id="faqList">
+      <div class="faq-item is-open">
+        <button class="faq-q" type="button">
+          <span class="num">01</span>
+          <span class="label">Можно ли купить недвижимость в Турции дистанционно?</span>
+          <span class="toggle" aria-hidden="true"></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a__inner">
+            <p>Да. По нотариальной доверенности мы проводим сделку без вашего присутствия в Турции — от выбора объекта до получения тапу. Все этапы согласовываем по видеосвязи, отчёты и сканы документов отправляем в WhatsApp и email.</p>
+            <p>Если предпочитаете приехать — организуем визовую поддержку, трансфер из аэропорта и тур по 5–8 объектам за 2 дня.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span class="num">02</span>
+          <span class="label">Какие документы нужны для покупки?</span>
+          <span class="toggle" aria-hidden="true"></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a__inner">
+            <p>Загранпаспорт, ИНН (turkish vergi numarası — оформим за 1 день), открытие счёта в турецком банке. Если покупка дистанционно — нотариальная доверенность на нашего представителя.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span class="num">03</span>
+          <span class="label">Получу ли я ВНЖ после покупки?</span>
+          <span class="toggle" aria-hidden="true"></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a__inner">
+            <p>ВНЖ оформляется автоматически при покупке недвижимости любой стоимости — на 2 года с правом продления. Для гражданства минимальная стоимость объекта — 400 000 USD; срок получения паспорта — 6–9 месяцев.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span class="num">04</span>
+          <span class="label">Какие дополнительные расходы при покупке?</span>
+          <span class="toggle" aria-hidden="true"></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a__inner">
+            <p>Налог на покупку — 4% от кадастровой стоимости (часто делится между сторонами). Услуги переводчика в кадастре — 200–300 EUR. Оценка объекта — 250 EUR. Регистрация коммунальных счётчиков и страховка DASK — 150–200 EUR. Все расходы озвучиваем до подписания договора.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span class="num">05</span>
+          <span class="label">Можно ли сдавать квартиру в аренду?</span>
+          <span class="toggle" aria-hidden="true"></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a__inner">
+            <p>Да. Помогаем подключить управляющую компанию — она занимается заездом гостей, уборкой и налогами. Средняя доходность долгосрочной аренды — 5–7% годовых; краткосрочной — 8–12%.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span class="num">06</span>
+          <span class="label">Что если объект окажется не таким, как на фото?</span>
+          <span class="toggle" aria-hidden="true"></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a__inner">
+            <p>Перед подписанием договора мы проводим личный видео-осмотр объекта и присылаем расширенный отчёт. До оплаты задатка вы можете отказаться от сделки без потерь. После задатка — действует юридическая защита по договору предварительной купли-продажи.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span class="num">07</span>
+          <span class="label">Берёте ли вы комиссию с клиента?</span>
+          <span class="toggle" aria-hidden="true"></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a__inner">
+            <p>Нет. Наши услуги для покупателя бесплатны — комиссию оплачивает застройщик или собственник. Цена объекта для вас не меняется. Юридическое сопровождение и сделка под ключ — без скрытых платежей.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ask" id="askForm" style="grid-column:1 / -1">
+      <div class="ask__head">
+        <h3>Не нашли ответа <em>на свой вопрос?</em></h3>
+        <p>Оставьте контакт и текст вопроса — менеджер свяжется в течение 15 минут и подробно ответит.</p>
+      </div>
+      <form class="ask__form" id="askFormEl" novalidate>
+        <div class="ask__field ask__field--3" data-required>
+          <input type="text" id="ask-name" placeholder=" " autocomplete="name">
+          <label for="ask-name">Имя</label>
+        </div>
+        <div class="ask__field ask__field--3" data-required data-validate="phone">
+          <input type="tel" id="ask-phone" placeholder=" " autocomplete="tel">
+          <label for="ask-phone">Телефон</label>
+        </div>
+        <div class="ask__field ask__field--3" data-required data-validate="email">
+          <input type="email" id="ask-email" placeholder=" " autocomplete="email">
+          <label for="ask-email">Email</label>
+        </div>
+        <div class="ask__field ask__field--full" data-required>
+          <textarea id="ask-msg" rows="3" placeholder=" "></textarea>
+          <label for="ask-msg">Ваш вопрос</label>
+        </div>
+        <div class="ask__submit-wrap">
+          <p class="ask__legal">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой конфиденциальности</a>. Не передаём данные третьим лицам.</p>
+          <button type="submit" class="ask__submit">Отправить <span class="arrow">→</span></button>
+        </div>
+      </form>
+      <div class="ask__sent">
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        <h4>Вопрос отправлен</h4>
+        <p>Менеджер ответит в течение 15 минут — на телефон или email.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12  SEO TEXT BLOCK ===== -->
+<section class="seo-text" id="seo-text" data-screen-label="12 SEO Text">
+  <div class="wrap" data-reveal>
+    <aside class="seo-text__side">
+      <div class="sec-eyebrow">О рынке</div>
+      <h2>Недвижимость в Турции <em>в 2026 году.</em></h2>
+      <nav class="seo-text__toc" id="seoToc">
+        <a href="#st-intro" class="is-active">Общий обзор</a>
+        <a href="#st-cities">Куда инвестировать</a>
+        <a href="#st-process">Процесс покупки</a>
+        <a href="#st-faq">Что важно знать</a>
+      </nav>
+    </aside>
+
+    <article class="seo-text__body">
+      <h2 id="st-intro">Покупка недвижимости в Турции: что нужно знать</h2>
+      <p>Турция остаётся одним из наиболее доступных и ликвидных рынков жилой недвижимости Средиземноморья. Для иностранных покупателей доступен полный пакет прав собственности (тапу), а средняя стоимость квадратного метра в курортных регионах в 2–3 раза ниже, чем в Греции или Испании при сопоставимом уровне инфраструктуры.</p>
+      <p><strong>Plus Investment</strong> сопровождает сделки от подбора объекта до регистрации права собственности и получения вида на жительство — без скрытых комиссий и с фиксированной стоимостью услуг.</p>
+
+      <h3 id="st-cities">Куда инвестировать в 2026 году</h3>
+      <p>Мы выделяем четыре направления, которые показывают устойчивый рост и спрос на аренду:</p>
+      <ul>
+        <li><strong>Алания</strong> — низкий порог входа (от € 95 000), стабильная аренда круглый год.</li>
+        <li><strong>Анталия</strong> — премиальный сегмент, развитая инфраструктура, международный аэропорт.</li>
+        <li><strong>Бодрум</strong> — виллы и комплексы у моря, ориентир на европейских покупателей.</li>
+        <li><strong>Стамбул</strong> — гражданство через инвестиции, ликвидность в долгосрочной перспективе.</li>
+      </ul>
+
+      <h3 id="st-process">Процесс покупки: пять шагов</h3>
+      <ol>
+        <li>Бесплатная консультация и подбор 3–5 объектов под цель и бюджет.</li>
+        <li>Личный или дистанционный просмотр с видео-отчётом по каждому объекту.</li>
+        <li>Юридическая проверка, оценка и подписание предварительного договора.</li>
+        <li>Открытие счёта, получение ИНН, оплата и регистрация сделки в кадастре.</li>
+        <li>Передача ключей, оформление ВНЖ и подключение управляющей компании.</li>
+      </ol>
+
+      <blockquote>
+        Покупка квартиры в Турции — это не разовая транзакция, а вход в локальную экосистему: банк, налоги, страховка, ВНЖ. Без местной экспертизы каждый из этих шагов может стоить недель и тысяч евро.
+        <cite>Plus Investment · Принципы работы</cite>
+      </blockquote>
+
+      <h3 id="st-faq">Что важно знать перед покупкой</h3>
+      <p>Не все объекты, выставленные на популярных порталах, реально доступны для иностранцев — некоторые попадают в военные или приграничные зоны. Мы проверяем каждый объект на пригодность к продаже иностранцу до того, как показать его вам.</p>
+      <p>Стоимость владения — около 0,2% от кадастровой стоимости в год плюс коммунальные услуги (~100–150 EUR в месяц) и страховка DASK (~30 EUR в год).</p>
+    </article>
+  </div>
+</section>
+
+</div><!-- /.page-content -->
+
+<!-- ===== FOOTER (reveal) ===== -->
+<footer class="site-footer" data-screen-label="13 Footer">
+  <div class="sf__watermark" aria-hidden="true">PLUS&nbsp;INVESTMENT</div>
+
+  <div class="sf__hero">
+    <span class="eyebrow">Plus Investment · Real estate Türkiye</span>
+    <h2>Готовы найти <em>ваш дом</em><br><span class="accent">или объект для инвестиций?</span></h2>
+  </div>
+
+  <div class="sf__cols">
+    <div class="sf-col sf-col--brand">
+      <span class="brand-fallback"><span class="plus">+</span>Plus Investment</span>
+      <p>Подбор и сопровождение сделок с недвижимостью в Турции — для инвестиций, переезда и отдыха.</p>
+    </div>
+
+    <div class="sf-col">
+      <h4>Навигация</h4>
+      <ul>
+        <li><a href="#">О нас</a></li>
+        <li><a href="#">Каталог недвижимости</a></li>
+        <li><a href="#">Услуги</a></li>
+        <li><a href="#blog">Блог</a></li>
+        <li><a href="#testimonials">Отзывы</a></li>
+        <li><a href="#">Контакты</a></li>
+      </ul>
+    </div>
+
+    <div class="sf-col">
+      <h4>Контакты</h4>
+      <div class="sf-contacts">
+        <div class="sf-contact">
+          <span class="l">Адрес</span>
+          <a href="#" class="v">Saray Mah., Atatürk Cad. No: 102, Alanya / Türkiye</a>
+        </div>
+        <div class="sf-contact">
+          <span class="l">Телефон</span>
+          <span class="v">
+            <a href="tel:+902425137038">+90 242 513 70 38</a>
+            <span class="sf-msg">
+              <a href="https://wa.me/902425137038" class="wa" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.7-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.2 3 .1.2 2 3 4.7 4.2 1.7.7 2.3.8 3.1.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.2-1.4c1.4.8 3 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg></a>
+              <a href="viber://chat?number=+902425137038" class="vb" aria-label="Viber"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.1 4.4C18 3.4 13.5 3.4 12 3.4S6 3.4 4.9 4.4C3.4 5.7 3 8 3 11s.4 5.3 1.9 6.6c.5.5 1.3.8 2.1.9v3l3-2.7c.7 0 1.4.1 2 .1 1.5 0 6 0 7.1-1 1.5-1.3 1.9-3.6 1.9-6.6s-.4-5.3-1.9-6.6zM13 17c-.5 0-.8-.4-.8-.8 0-.5.4-.8.8-.8 1.8 0 3.2-1.4 3.2-3.2 0-.5.4-.8.8-.8.5 0 .8.4.8.8.1 2.7-2.1 4.8-4.8 4.8zm5.6-5.4c-.5 0-.8-.4-.8-.8 0-2.7-2.2-4.9-4.9-4.9-.5 0-.8-.4-.8-.8 0-.5.4-.8.8-.8 3.6 0 6.5 2.9 6.5 6.5 0 .4-.4.8-.8.8zM15.6 13.2c-.4 0-.7-.3-.8-.7-.1-1-.7-1.6-1.7-1.8-.4-.1-.7-.5-.6-.9.1-.4.5-.7.9-.6 1.7.3 2.7 1.3 3 3 .1.4-.2.9-.6 1h-.2zm-3.9.7c.5-.5 1.4-.4 1.8.2 0 0 .3.3.3.4.2.1.5.3.7.2.5-.1 1.4-.9 1.5-1.4 0-.2 0-.4-.1-.5l-.4-.4c-.5-.4-.5-1.2-.1-1.7.4-.5 1.2-.5 1.7-.1l.5.4c.5.4.9 1.1.8 1.8-.3 1.5-1.9 2.9-3.4 3-.6 0-1.2-.3-1.6-.6-.4-.3-1.1-1.1-1.1-1.1-.5-.4-.6-1.2-.2-1.7-.1.2-.4.3-.4.5z"/></svg></a>
+            </span>
+          </span>
+        </div>
+        <div class="sf-contact">
+          <span class="l">Email</span>
+          <a href="mailto:info@plusinvestment.com.tr" class="v">info@plusinvestment.com.tr</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sf-col">
+      <h4>Соцсети</h4>
+      <div class="sf-socials">
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5c-.2-1.5-.9-2.5-2.4-2.7C18 4.5 12 4.5 12 4.5s-6 0-8.6.3C1.9 5 1.2 6 1 7.5.7 9 .7 12 .7 12s0 3 .3 4.5c.2 1.5.9 2.5 2.4 2.7 2.6.3 8.6.3 8.6.3s6 0 8.6-.3c1.5-.2 2.2-1.2 2.4-2.7.3-1.5.3-4.5.3-4.5s0-3-.3-4.5zM10 15V9l5 3-5 3z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h3l1-4h-4V7.5c0-1.1.4-2 2-2h2V2h-3.5C10.7 2 9 3.8 9 6.5V10H6v4h3v8h4z"/></svg></a>
+        <a href="#" aria-label="ВКонтакте"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.4 17c-5 0-8.2-3.5-8.4-9.4h2.5c.1 4.3 2 6 3.5 6.4V7.6h2.4v3.7c1.4-.2 2.9-1.8 3.4-3.7H18c-.4 2.3-2 4-3.2 4.6 1.2.5 3 2 3.7 4.6h-2.7c-.5-1.7-1.9-3-3.4-3.2v3.4z"/></svg></a>
+      </div>
+    </div>
+
+    <div class="sf-col">
+      <h4>Подписка</h4>
+      <form class="sf-sub" id="sfSub" novalidate>
+        <p>Подборка объектов и аналитика рынка раз в месяц. Без спама.</p>
+        <input type="text" placeholder="Имя" autocomplete="name" required>
+        <input type="email" placeholder="Email" autocomplete="email" required>
+        <button type="submit">Подписаться <span class="arrow">→</span></button>
+        <div class="sf-sub__sent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Готово — вы подписались.</div>
+      </form>
+    </div>
+  </div>
+
+  <div class="sf__bottom">
+    <span>© 2025 Plus Investment</span>
+    <a href="#">Политика конфиденциальности</a>
+    <span class="dev">Разработка сайта и SEO-продвижение: <a href="#">—</a></span>
+  </div>
+</footer>
+
+<!-- ===== MODAL: lead form ===== -->
+<div class="modal" id="leadModal" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle">
+  <div class="modal__backdrop" data-close-modal></div>
+  <div class="modal__card">
+    <button class="modal__close" data-close-modal aria-label="Закрыть">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="modal__eyebrow">Plus Investment</div>
+    <h3 class="modal__title" id="leadModalTitle">Подобрать <em>недвижимость</em></h3>
+    <p class="modal__sub">Оставьте заявку — менеджер свяжется в течение 15 минут и подготовит подборку под вашу цель.</p>
+    <form class="modal__form" onsubmit="event.preventDefault();">
+      <div class="field">
+        <label>Имя</label>
+        <input type="text" placeholder="Как к вам обращаться">
+      </div>
+      <div class="field">
+        <label>Контакт (телефон / WhatsApp)</label>
+        <input type="tel" placeholder="+90 ___ ___ __ __">
+      </div>
+      <div class="field">
+        <label>Цель</label>
+        <select>
+          <option>Инвестиции</option>
+          <option>Переезд</option>
+          <option>Отдых</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Бюджет</label>
+        <select>
+          <option>до € 200 000</option>
+          <option>€ 200 000 — 500 000</option>
+          <option>€ 500 000 — 1 000 000</option>
+          <option>от € 1 000 000</option>
+        </select>
+      </div>
+      <button class="modal__submit" type="submit">
+        Подобрать недвижимость <span class="arrow">→</span>
+      </button>
+      <p class="modal__legal">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</p>
+    </form>
+  </div>
+</div>
+
+<script>
+  // sticky header
+  const topbar = document.getElementById('topbar');
+  const onScroll = () => topbar.classList.toggle('is-pinned', window.scrollY > 24);
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // SEO bg images via inline custom prop --img
+  const sheet = document.createElement('style');
+  sheet.textContent = `.seo-card[style*="--img"]::before{ background-image: var(--img); }`;
+  document.head.appendChild(sheet);
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+
+  // Modal: open/close
+  const modal = document.getElementById('leadModal');
+  const openModal = () => { modal.classList.add('is-open'); document.body.style.overflow='hidden'; };
+  const closeModal = () => { modal.classList.remove('is-open'); document.body.style.overflow=''; };
+  document.querySelectorAll('[data-open-modal]').forEach(b=>b.addEventListener('click', e=>{ e.preventDefault(); openModal(); }));
+  document.querySelectorAll('[data-close-modal]').forEach(b=>b.addEventListener('click', closeModal));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+  // Advanced search toggle
+  const advBtn = document.getElementById('searchAdvancedToggle');
+  const advPanel = document.getElementById('searchExtended');
+  const advLabel = advBtn.querySelector('.search-advanced__label');
+  advBtn.addEventListener('click', ()=>{
+    const open = advPanel.classList.toggle('is-open');
+    advBtn.classList.toggle('is-open', open);
+    advLabel.textContent = open ? 'Скрыть расширенный поиск' : 'Расширенный поиск';
+  });
+
+  // ===== Lead full form validation + success =====
+  const lfForm = document.getElementById('leadFullForm');
+  if(lfForm){
+    const validators = {
+      phone: v => /^[\+\d\s\-\(\)]{8,}$/.test(v.trim()),
+      email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+    };
+    lfForm.addEventListener('submit', e=>{
+      e.preventDefault();
+      let ok = true;
+      lfForm.querySelectorAll('.lb__field').forEach(f=>{
+        const inp = f.querySelector('input, textarea');
+        const val = inp.value.trim();
+        f.classList.remove('is-error');
+        if(f.hasAttribute('data-required') && !val){ f.classList.add('is-error'); ok=false; return; }
+        const vk = f.getAttribute('data-validate');
+        if(val && vk && validators[vk] && !validators[vk](val)){ f.classList.add('is-error'); ok=false; }
+      });
+      if(ok){ lfForm.classList.add('is-success'); }
+    });
+    lfForm.querySelectorAll('input,textarea').forEach(el=>{
+      el.addEventListener('input', ()=>el.closest('.lb__field').classList.remove('is-error'));
+    });
+  }
+
+  // ===== Why us: scroll-jacked horizontal track + wave fill =====
+  (function(){
+    const runway = document.getElementById('whyRunway');
+    const track = document.getElementById('whyTrack');
+    const bar = document.getElementById('whyBar');
+    const curEl = document.getElementById('whyCur');
+    const waveFg = document.getElementById('waveFg');
+    const waveGlow = document.getElementById('waveGlow');
+    if(!runway || !track) return;
+    if(window.matchMedia('(max-width:900px)').matches || window.matchMedia('(hover:none)').matches) return;
+
+    if(waveFg){
+      const len = waveFg.getTotalLength();
+      waveFg.style.setProperty('--len', len);
+      waveGlow.style.setProperty('--len', len);
+    }
+    const cards = track.querySelectorAll('.why-card');
+    const activeCount = 6;
+
+    function onScroll(){
+      const rect = runway.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const total = runway.offsetHeight - vh;
+      let p = (-rect.top) / total;
+      p = Math.max(0, Math.min(1, p));
+      const maxX = track.scrollWidth - track.parentElement.clientWidth;
+      track.style.transform = `translateX(${-p * maxX}px)`;
+      const pct = Math.round(p*100);
+      bar.style.setProperty('--p', pct + '%');
+      const idx = Math.min(activeCount-1, Math.floor(p * activeCount + 0.001));
+      curEl.textContent = String(idx+1).padStart(2,'0');
+      if(waveFg){
+        waveFg.style.setProperty('--p-num', p);
+        waveGlow.style.setProperty('--p-num', p);
+      }
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll);
+    onScroll();
+  })();
+
+  // ===== Video tabs =====
+  (function(){
+    const tabs = document.querySelectorAll('.video-tab');
+    const cards = document.querySelectorAll('.vc[data-cat]');
+    tabs.forEach(t=>t.addEventListener('click', ()=>{
+      tabs.forEach(x=>x.classList.remove('is-active'));
+      t.classList.add('is-active');
+      const cat = t.dataset.tab;
+      cards.forEach(c=>{
+        const show = cat==='all' || c.dataset.cat===cat;
+        c.style.display = show ? '' : 'none';
+      });
+    }));
+  })();
+
+  // ===== Testimonials slider =====
+  (function(){
+    const track = document.getElementById('tmTrack');
+    const prev = document.getElementById('tmPrev');
+    const next = document.getElementById('tmNext');
+    const dotsBox = document.getElementById('tmDots');
+    if(!track) return;
+    const cards = [...track.children];
+    let idx = 0;
+    function perView(){
+      const w = window.innerWidth;
+      if(w <= 640) return 1;
+      if(w <= 900) return 2;
+      return 3;
+    }
+    function pages(){ return Math.max(1, cards.length - perView() + 1); }
+    function renderDots(){
+      dotsBox.innerHTML = '';
+      const p = pages();
+      for(let i=0;i<p;i++){
+        const b = document.createElement('button');
+        b.className = 'tm__dot' + (i===idx?' is-active':'');
+        b.addEventListener('click', ()=>{ idx=i; update(); });
+        dotsBox.appendChild(b);
+      }
+    }
+    function update(){
+      const p = pages();
+      idx = Math.max(0, Math.min(idx, p-1));
+      const card = cards[0];
+      const gap = parseFloat(getComputedStyle(track).gap)||24;
+      const step = card.offsetWidth + gap;
+      track.style.transform = `translateX(${-idx*step}px)`;
+      [...dotsBox.children].forEach((d,i)=>d.classList.toggle('is-active', i===idx));
+    }
+    prev.addEventListener('click', ()=>{ idx--; update(); });
+    next.addEventListener('click', ()=>{ idx++; update(); });
+    window.addEventListener('resize', ()=>{ renderDots(); update(); });
+    renderDots(); update();
+
+    // Read-more expand for text cards
+    track.querySelectorAll('.tm-card:not(.tm-card--video) .tm__more').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        e.preventDefault();
+        const card = btn.closest('.tm-card');
+        card.classList.add('is-expanded');
+        btn.classList.add('hide');
+      });
+    });
+    // Hide "Читать полностью" when text isn't clamped (short text fits)
+    track.querySelectorAll('.tm-card:not(.tm-card--video)').forEach(card=>{
+      const txt = card.querySelector('.tm__text');
+      const btn = card.querySelector('.tm__more');
+      if(!btn) return;
+      // measure after layout
+      requestAnimationFrame(()=>{
+        if(txt.scrollHeight <= txt.clientHeight + 2) btn.classList.add('hide');
+      });
+    });
+  })();
+
+  // ===== FAQ accordion =====
+  (function(){
+    const list = document.getElementById('faqList');
+    if(!list) return;
+    list.querySelectorAll('.faq-item').forEach(item=>{
+      const q = item.querySelector('.faq-q');
+      const a = item.querySelector('.faq-a');
+      const setOpen = (open)=>{
+        item.classList.toggle('is-open', open);
+        a.style.maxHeight = open ? (a.scrollHeight + 'px') : '0px';
+      };
+      // init
+      if(item.classList.contains('is-open')) setOpen(true);
+      q.addEventListener('click', ()=>{
+        const isOpen = item.classList.contains('is-open');
+        // close others
+        list.querySelectorAll('.faq-item').forEach(i=>{
+          if(i!==item){ i.classList.remove('is-open'); i.querySelector('.faq-a').style.maxHeight='0px'; }
+        });
+        setOpen(!isOpen);
+      });
+    });
+  })();
+
+  // ===== Ask form =====
+  (function(){
+    const ask = document.getElementById('askForm');
+    const form = document.getElementById('askFormEl');
+    if(!form) return;
+    const validators = {
+      phone: v => /^[\+\d\s\-\(\)]{8,}$/.test(v.trim()),
+      email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+    };
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      let ok = true;
+      form.querySelectorAll('.ask__field').forEach(f=>{
+        const inp = f.querySelector('input, textarea');
+        const val = inp.value.trim();
+        f.classList.remove('is-error');
+        if(f.hasAttribute('data-required') && !val){ f.classList.add('is-error'); ok=false; return; }
+        const vk = f.getAttribute('data-validate');
+        if(val && vk && validators[vk] && !validators[vk](val)){ f.classList.add('is-error'); ok=false; }
+      });
+      if(ok) ask.classList.add('is-sent');
+    });
+    form.querySelectorAll('input,textarea').forEach(el=>{
+      el.addEventListener('input', ()=>el.closest('.ask__field').classList.remove('is-error'));
+    });
+  })();
+
+  // ===== SEO TOC scrollspy =====
+  (function(){
+    const toc = document.getElementById('seoToc');
+    if(!toc) return;
+    const links = [...toc.querySelectorAll('a')];
+    const targets = links.map(l=>document.querySelector(l.getAttribute('href'))).filter(Boolean);
+    links.forEach(l=>l.addEventListener('click', e=>{
+      e.preventDefault();
+      const t = document.querySelector(l.getAttribute('href'));
+      if(t) window.scrollTo({top:t.getBoundingClientRect().top + window.scrollY - 100, behavior:'smooth'});
+    }));
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const id = e.target.id;
+          links.forEach(l=>l.classList.toggle('is-active', l.getAttribute('href')==='#'+id));
+        }
+      });
+    }, {rootMargin:'-30% 0px -60% 0px'});
+    targets.forEach(t=>io.observe(t));
+  })();
+
+  // ===== Showcase: pinned horizontal scroll + parallax =====
+  (function(){
+    const runway = document.getElementById('scRunway');
+    const track = document.getElementById('scTrack');
+    const bar = document.getElementById('scBar');
+    const curEl = document.getElementById('scCur');
+    if(!runway || !track) return;
+    if(window.matchMedia('(max-width:900px)').matches || window.matchMedia('(hover:none)').matches) return;
+
+    const cards = track.querySelectorAll('.sc-card');
+    const parallaxImgs = track.querySelectorAll('.sc-parallax');
+    let targetX = 0, currentX = 0, raf = null;
+
+    function loop(){
+      // ease toward target — inertia
+      currentX += (targetX - currentX) * 0.12;
+      track.style.transform = `translate3d(${-currentX}px,0,0)`;
+      // parallax: each image shifts proportionally to its position within the viewport
+      const vpRect = track.parentElement.getBoundingClientRect();
+      const vpCenter = vpRect.left + vpRect.width / 2;
+      parallaxImgs.forEach(img=>{
+        const r = img.getBoundingClientRect();
+        const c = r.left + r.width/2;
+        const offset = (c - vpCenter) * parseFloat(img.dataset.px || 0.08);
+        img.style.transform = `translate3d(${-offset}px,0,0) scale(1.04)`;
+      });
+      if(Math.abs(targetX - currentX) > 0.5) raf = requestAnimationFrame(loop);
+      else { raf = null; }
+    }
+
+    function update(){
+      const rect = runway.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const total = runway.offsetHeight - vh;
+      let p = (-rect.top) / total;
+      p = Math.max(0, Math.min(1, p));
+      const maxX = track.scrollWidth - track.parentElement.clientWidth;
+      targetX = p * maxX;
+      if(!raf) raf = requestAnimationFrame(loop);
+      // progress
+      bar.style.setProperty('--p', Math.round(p*100) + '%');
+      const idx = Math.min(cards.length-1, Math.floor(p * cards.length + 0.001));
+      curEl.textContent = String(idx+1).padStart(2,'0');
+    }
+
+    window.addEventListener('scroll', update, {passive:true});
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  // ===== Footer subscribe form =====
+  (function(){
+    const f = document.getElementById('sfSub');
+    if(!f) return;
+    f.addEventListener('submit', e=>{
+      e.preventDefault();
+      const [name, email] = f.querySelectorAll('input');
+      if(!name.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) return;
+      f.classList.add('is-sent');
+    });
+  })();
+</script>
+
+</body>
+</html>
